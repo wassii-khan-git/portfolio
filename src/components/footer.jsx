@@ -14,7 +14,7 @@ const Footer = () => {
   const socialLinks = [
     {
       icon: GithubOutlined,
-      link: "https://github.com/wassii-khan",
+      link: "https://github.com/wassii-khan-git",
     },
     {
       icon: LinkedinOutlined,
