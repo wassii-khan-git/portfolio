@@ -1,5 +1,4 @@
 import { CloseCircleOutlined } from "@ant-design/icons";
-import PropTypes from "prop-types";
 
 const Modal = ({ close, data, isDarkMode }) => {
   return (
@@ -116,12 +115,6 @@ const Modal = ({ close, data, isDarkMode }) => {
       </div>
     </div>
   );
-};
-
-Modal.propTypes = {
-  close: PropTypes.func.isRequired,
-  data: PropTypes.object.isRequired,
-  isDarkMode: PropTypes.bool.isRequired,
 };
 
 export default Modal;

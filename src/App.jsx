@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Home from "./pages/home";
 import ScrollButton from "./components/scrollButton";
-// Main component
+// App
 function App() {
   // Scroll
   const [scroll, setScroll] = useState("");

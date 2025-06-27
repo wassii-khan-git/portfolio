@@ -1,3 +1,4 @@
+// Button component
 const Button = ({ text, withicon, handleClick }) => {
   return (
     <button

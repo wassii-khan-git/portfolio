@@ -1,5 +1,4 @@
 import { ArrowUpOutlined } from "@ant-design/icons";
-import PropTypes from "prop-types";
 
 const ScrollButton = ({ scroll, ScrolltoTop }) => {
   return (
@@ -16,12 +15,6 @@ const ScrollButton = ({ scroll, ScrolltoTop }) => {
       </button>
     </div>
   );
-};
-
-// Proptypes validation
-ScrollButton.propTypes = {
-  scroll: PropTypes.string.isRequired,
-  ScrolltoTop: PropTypes.func.isRequired,
 };
 
 export default ScrollButton;
