@@ -6,7 +6,7 @@ const CustomField = ({ errors, touched, fieldKey, fieldName }) => {
   return (
     <>
       <label
-        key={fieldKey}
+        key={fieldKey || 1}
         className={`block font-medium ${
           isDarkMode ? "text-gray-300" : "text-gray-700"
         }`}
