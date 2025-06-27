@@ -8,7 +8,6 @@ import Portfolio from "../components/portfolio";
 import Skills from "../components/skills";
 import { useScroll } from "../hook";
 import { ScrollProvider } from "../hook/scrollContext";
-import proptypes from "prop-types";
 
 const Section = ({ children, refName }) => {
   const { [refName]: ref } = useScroll();
@@ -56,10 +55,5 @@ const Home = () => (
     <HomeContent />
   </ScrollProvider>
 );
-
-Section.propTypes = {
-  children: proptypes.node.isRequired,
-  refName: proptypes.string.isRequired,
-};
 
 export default Home;
