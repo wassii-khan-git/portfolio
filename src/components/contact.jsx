@@ -6,10 +6,12 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import CustomField from "./fields";
+import { SendMail } from "../services/mailService";
 
 const Contact = () => {
   const { isDarkMode } = useDarkMode();
   const [message, setMessage] = useState({ success: false, msg: "" });
+
   return (
     <section className="w-full py-20 dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -123,6 +125,26 @@ const Contact = () => {
                 subject: Yup.string().required("Subject field is required"),
                 message: Yup.string().required("Message field is required"),
               })}
+              onSubmit={async (values, { resetForm }) => {
+                const response = SendMail(
+                  values.fullName,
+                  values.email,
+                  values.subject,
+                  values.message
+                );
+                if (!response.ok) {
+                  setMessage({
+                    success: false,
+                    msg: response || "Some error occurred!",
+                  });
+                }
+                setMessage({
+                  success: true,
+                  msg: "Email sent successfully!",
+                });
+                resetForm();
+                console.log("email response", response);
+              }}
             >
               {({ errors, touched, handleSubmit, isSubmitting }) => (
                 <form className="space-y-6">
@@ -167,7 +189,9 @@ const Contact = () => {
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`w-full py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
+                      className={`w-full ${
+                        isSubmitting ? "cursor-not-allowed" : ""
+                      } py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
                         isDarkMode
                           ? "bg-redish/90 hover:bg-redish text-white"
                           : "bg-redish hover:bg-redish/90 text-white"
