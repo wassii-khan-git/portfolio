@@ -147,7 +147,7 @@ const Contact = () => {
               }}
             >
               {({ errors, touched, handleSubmit, isSubmitting }) => (
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={handleSubmit}>
                   {/* Full Name */}
                   <div className="space-y-2">
                     <CustomField
@@ -187,16 +187,16 @@ const Contact = () => {
                   {/* Submit */}
                   <div className="space-y-6">
                     <motion.button
+                      type="submit"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       className={`w-full ${
-                        isSubmitting ? "cursor-not-allowed" : ""
+                        isSubmitting && "cursor-not-allowed"
                       } py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
                         isDarkMode
                           ? "bg-redish/90 hover:bg-redish text-white"
                           : "bg-redish hover:bg-redish/90 text-white"
                       }`}
-                      onClick={handleSubmit}
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? "Sending..." : "Send Message"}
