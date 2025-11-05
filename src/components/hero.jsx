@@ -94,7 +94,7 @@ const Hero = () => {
               className="mt-12 flex gap-8 flex-wrap"
             >
               <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
-                <div className="text-3xl font-bold text-redish">1+</div>
+                <div className="text-3xl font-bold text-redish">2+</div>
                 <div className="text-gray-600 dark:text-gray-400">
                   Years Experience
                 </div>
