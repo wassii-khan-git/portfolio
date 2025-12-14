@@ -6,7 +6,7 @@ import TypingAnimator from "react-typing-animator";
 import { useDarkMode } from "../hook";
 import { imageVariants, staggerVariants, textVariants } from "./styles";
 
-import heroImage from "../assets/hero-1.jpg";
+import heroImage from "../assets/profile.png";
 
 const Hero = () => {
   const { isDarkMode } = useDarkMode(); // Access dark mode state
