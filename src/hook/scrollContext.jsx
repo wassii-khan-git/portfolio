@@ -1,5 +1,5 @@
 // components/ScrollContext.jsx
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 import { ScrollContext } from "./context";
 
 export const ScrollProvider = ({ children }) => {

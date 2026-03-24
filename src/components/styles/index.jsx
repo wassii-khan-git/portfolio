@@ -13,7 +13,7 @@ export const imageVariants = {
 export const staggerVariants = {
   animate: {
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.15,
     },
   },
 };
