@@ -37,8 +37,8 @@ const Navbar = () => {
           isOpen ? "opacity-30" : "opacity-100"
         } md:opacity-100 transition-opacity duration-300`}
       >
-        <nav className="border-b shadow-md bg-white dark:bg-gray-900">
-          <div className="max-w-[82rem] mx-auto px-4">
+        <nav className="dark:border-b dark:border-gray-600 shadow-md bg-white dark:bg-gray-900">
+          <div className="max-w-328 mx-auto px-4">
             <div className="relative flex justify-between items-center h-16">
               {/* Logo */}
               <div className="flex items-center space-x-2">
@@ -101,7 +101,7 @@ const Navbar = () => {
       >
         <div className="h-full flex flex-col">
           {/* Logo section in mobile menu */}
-          <div className="px-6 py-4 border-b dark:border-gray-800">
+          <div className="px-6 py-4 dark:border-b-gray-600 shadow-md bg-white dark:bg-gray-900  dark:border-b dark:border-gray-800">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <img src={logo} alt="logo" className="w-8 h-8" />

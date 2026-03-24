@@ -15,7 +15,7 @@ const Hero = () => {
     <section className="min-h-screen flex items-center bg-halfwhite dark:bg-gray-900 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute -left-32 -top-32 w-96 h-96 rounded-full bg-redish/10 dark:bg-redish/20 blur-3xl"></div>
-      <div className="absolute -right-64 -bottom-64 w-[800px] h-[800px] rounded-full bg-redish/5 dark:bg-redish/10 blur-3xl"></div>
+      <div className="absolute -right-64 -bottom-64 w-200 h-200 rounded-full bg-redish/5 dark:bg-redish/10 blur-3xl"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
@@ -115,7 +115,7 @@ const Hero = () => {
             animate="animate"
             className="order-1 lg:order-2 relative w-full max-w-xl"
           >
-            <div className="w-full rounded-[3rem] shadow-2xl overflow-hidden bg-gradient-to-br from-redish/5 dark:from-redish/10 to-white dark:to-gray-800 border-8 border-white dark:border-gray-800">
+            <div className="w-full rounded-[3rem] shadow-2xl overflow-hidden bg-linear-to-br from-redish/5 dark:from-redish/10 to-white dark:to-gray-800 border-8 border-white dark:border-gray-800">
               <img
                 src={heroImage}
                 alt="Waseem Khan - Full Stack Developer"
