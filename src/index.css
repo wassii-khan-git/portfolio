@@ -1,11 +1,33 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
+/* ---- Replaces tailwind.config.js ---- */
+@theme {
+  /* Box Shadows */
+  --shadow-neuromorphic: 9px 9px 16px #cbced1, -9px -9px 16px #ffffff;
+  --shadow-neuromorphic-inset:
+    inset 9px 9px 16px #cbced1, inset -9px -9px 16px #ffffff;
 
-/* Custom dark mode styles */
+  /* Colors */
+  --color-halfwhite: #ecf0f3;
+  --color-redish: #ff014f;
+  --color-black: #1e2125;
+
+  /* Font Families */
+  --font-heading: "Playfair Display", ui-serif, Georgia, serif;
+  --font-poppins: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-button: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-badge: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Dark mode */
+@variant dark (&:where(.dark, .dark *));
+
 .dark {
-    background-color: #1a202c; /* Dark background */
-    color: #ffffff; /* Light text */
-  }
-  
+  background-color: #1a202c;
+  color: #ffffff;
+}
+
+button {
+  cursor: pointer;
+}
