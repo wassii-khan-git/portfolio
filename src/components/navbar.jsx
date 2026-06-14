@@ -3,7 +3,6 @@ import { useState } from "react";
 // Icons
 import { SunOutlined, MoonOutlined } from "@ant-design/icons";
 import { useDarkMode, useScroll } from "../hook";
-
 // Logo
 export const logo = "./cv.png";
 
@@ -38,7 +37,7 @@ const Navbar = () => {
         } md:opacity-100 transition-opacity duration-300`}
       >
         <nav className="dark:border-b dark:border-gray-600 shadow-md bg-white dark:bg-gray-900">
-          <div className="max-w-328 mx-auto px-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-7">
             <div className="relative flex justify-between items-center h-16">
               {/* Logo */}
               <div className="flex items-center space-x-2">
