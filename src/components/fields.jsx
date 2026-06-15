@@ -1,39 +1,33 @@
 import { Field } from "formik";
-import { useDarkMode } from "../hook";
 
 const CustomField = ({ errors, touched, fieldKey, fieldName }) => {
-  const { isDarkMode } = useDarkMode();
+  const isMessage = fieldKey === "message";
+
   return (
-    <>
+    <div className="space-y-2">
       <label
-        key={fieldKey || 1}
-        className={`block font-medium ${
-          isDarkMode ? "text-gray-300" : "text-gray-700"
-        }`}
+        htmlFor={fieldKey}
+        className="block font-semibold text-[#334155] dark:text-[#cbd5e1]"
       >
         {fieldName}
       </label>
       <Field
-        key={fieldKey}
+        id={fieldKey}
         name={fieldKey}
-        as={fieldKey === "message" && "textarea"}
-        rows={fieldKey === "message" && 5}
-        className={` ${
-          fieldKey === "message" && "resize-none"
-        } w-full px-4 py-3 rounded-lg border ${
-          errors && touched && "border-red-500"
-        } outline-none focus:ring-2 focus:ring-redish/50 ${
-          isDarkMode
-            ? "bg-gray-700 border-gray-600 text-white"
-            : "bg-white border-gray-300 text-gray-900"
-        } transition-all duration-300`}
+        as={isMessage ? "textarea" : "input"}
+        rows={isMessage ? 5 : undefined}
+        className={`w-full rounded-md border px-4 py-3 text-[#0f172a] outline-none transition focus:border-[#be123c] focus:ring-2 focus:ring-[#be123c]/20 dark:bg-[#0b1120] dark:text-white ${
+          isMessage ? "resize-none" : ""
+        } ${
+          errors && touched
+            ? "border-[#be123c]"
+            : "border-[#cbd5e1] dark:border-[#334155]"
+        }`}
       />
       {errors && touched && (
-        <div key={fieldKey} className="text-redish">
-          {errors}
-        </div>
+        <p className="text-sm font-semibold text-[#be123c]">{errors}</p>
       )}
-    </>
+    </div>
   );
 };
 

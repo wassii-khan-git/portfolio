@@ -1,118 +1,87 @@
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined, MailOutlined } from "@ant-design/icons";
+import ProjectVisual from "../projectVisual";
+import { profile } from "../../data/profile";
 
-const Modal = ({ close, data, isDarkMode }) => {
+const Modal = ({ close, data }) => {
   return (
-    <div className="fixed inset-0 z-[9999] flex items-start md:items-center justify-center p-2 sm:p-4 backdrop-blur-sm overflow-y-auto">
-      {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/50" onClick={close} />
+    <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto p-3 backdrop-blur-sm md:items-center">
+      <button
+        type="button"
+        aria-label="Close project details"
+        className="fixed inset-0 bg-slate-950/60"
+        onClick={close}
+      />
 
-      {/* Modal Content */}
-      <div
-        className={`relative w-full max-w-[95vw] md:max-w-4xl rounded-xl md:rounded-2xl shadow-2xl ${
-          isDarkMode ? "bg-gray-800" : "bg-white"
-        }  md:mt-0`}
-      >
-        {/* Close Button */}
+      <article className="relative my-6 w-full max-w-5xl overflow-hidden rounded-lg border border-[#d8dee9] bg-white shadow-2xl dark:border-[#273449] dark:bg-[#111827]">
         <button
           onClick={close}
-          className={`absolute right-4 top-4 z-10 p-1 rounded-full ${
-            isDarkMode
-              ? "text-gray-200 hover:text-white"
-              : "text-gray-600 hover:text-gray-900"
-          } transition-colors`}
+          aria-label="Close project details"
+          className="absolute right-4 top-4 z-10 rounded-md bg-white/90 p-2 text-[#475569] shadow-sm transition hover:text-[#0f172a] dark:bg-[#0b1120]/90 dark:text-[#cbd5e1] dark:hover:text-white"
         >
-          <CloseCircleOutlined className="text-2xl md:text-3xl" />
+          <CloseCircleOutlined className="text-2xl" />
         </button>
 
-        <div className="p-4 md:p-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-            {/* Left Side */}
-            <div className="relative aspect-square rounded-lg md:rounded-xl overflow-hidden">
-              <img
-                src={data.image}
-                alt={data.title}
-                className="w-full h-full object-cover"
-              />
+        <div className="grid grid-cols-1 lg:grid-cols-[0.92fr_1.08fr]">
+          <div className="p-4 lg:p-6">
+            <ProjectVisual project={data} />
+          </div>
+
+          <div className="p-6 lg:p-8">
+            <p className="text-sm font-semibold uppercase text-[#be123c] dark:text-[#fb7185]">
+              {data.category}
+            </p>
+            <h2 className="mt-3 text-3xl font-bold text-[#0f172a] dark:text-white">
+              {data.title}
+            </h2>
+            <p className="mt-4 leading-8 text-[#475569] dark:text-[#cbd5e1]">
+              {data.details}
+            </p>
+
+            <div className="mt-7">
+              <h3 className="font-bold text-[#0f172a] dark:text-white">
+                Impact and responsibility
+              </h3>
+              <ul className="mt-3 space-y-3">
+                {data.impact.map((item) => (
+                  <li
+                    key={item}
+                    className="flex gap-3 text-[#475569] dark:text-[#cbd5e1]"
+                  >
+                    <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#be123c]" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            {/* Right Side */}
-            <div className="space-y-4 md:space-y-6">
-              <div>
-                <span
-                  className={`text-xs md:text-sm font-medium ${
-                    isDarkMode ? "text-redish/80" : "text-redish"
-                  } uppercase`}
-                >
-                  {data.category}
-                </span>
-                <h2
-                  className={`mt-1 md:mt-2 text-xl md:text-3xl font-bold ${
-                    isDarkMode ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  {data.title}
-                </h2>
-              </div>
-
-              <p
-                className={`text-sm md:text-lg ${
-                  isDarkMode ? "text-gray-400" : "text-gray-600"
-                }`}
-              >
-                {data.details}
-              </p>
-
-              {/* Tech Stack */}
-              <div className="space-y-2 md:space-y-3">
-                <h4
-                  className={`text-sm md:text-base font-semibold ${
-                    isDarkMode ? "text-gray-200" : "text-gray-800"
-                  }`}
-                >
-                  Technologies Used:
-                </h4>
-                <div className="flex flex-wrap gap-1 md:gap-2">
-                  {data.tech?.map((tech, index) => (
-                    <span
-                      key={index}
-                      className={`px-2 py-1 md:px-3 md:py-1 text-xs md:text-sm rounded-full ${
-                        isDarkMode
-                          ? "bg-gray-700 text-gray-300"
-                          : "bg-redish/10 text-redish"
-                      }`}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-2 md:gap-4 pt-4 md:pt-6">
-                <button
-                  className={`px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm md:text-base font-medium transition-all ${
-                    isDarkMode
-                      ? "bg-redish/90 hover:bg-redish text-white"
-                      : "bg-redish hover:bg-redish/90 text-white"
-                  }`}
-                >
-                  View Live Demo
-                </button>
-                <button
-                  onClick={close}
-                  className={`px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm md:text-base font-medium border ${
-                    isDarkMode
-                      ? "border-gray-600 hover:border-gray-500 text-gray-300"
-                      : "border-gray-300 hover:border-gray-400 text-gray-600"
-                  }`}
-                >
-                  Close
-                </button>
+            <div className="mt-7">
+              <h3 className="font-bold text-[#0f172a] dark:text-white">
+                Technology stack
+              </h3>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {data.tech.map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded-md bg-[#f1f5f9] px-3 py-2 text-sm font-semibold text-[#334155] dark:bg-[#1f2937] dark:text-[#cbd5e1]"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
+
+            <a
+              href={`mailto:${profile.email}?subject=Project case study: ${encodeURIComponent(
+                data.title
+              )}`}
+              className="mt-8 inline-flex items-center gap-2 rounded-md bg-[#be123c] px-5 py-3 font-semibold text-white transition hover:bg-[#9f1239]"
+            >
+              <MailOutlined />
+              Request Details
+            </a>
           </div>
         </div>
-      </div>
+      </article>
     </div>
   );
 };

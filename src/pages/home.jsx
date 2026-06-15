@@ -12,7 +12,7 @@ import { ScrollProvider } from "../hook/scrollContext";
 const Section = ({ children, refName }) => {
   const { [refName]: ref } = useScroll();
   return (
-    <div ref={ref} className="scroll-mt-16 dark:bg-gray-900">
+    <div ref={ref} className="scroll-mt-16">
       {children}
     </div>
   );
@@ -20,7 +20,7 @@ const Section = ({ children, refName }) => {
 
 const HomeContent = () => {
   return (
-    <div className="bg-halfwhite dark:bg-gray-900 min-h-screen">
+    <div className="min-h-screen bg-[#f6f8fb] dark:bg-[#0b1120]">
       <Navbar />
 
       <main className="pt-16">
@@ -44,7 +44,7 @@ const HomeContent = () => {
           <Contact />
         </Section>
 
-        <Footer className="dark:bg-gray-800" />
+        <Footer />
       </main>
     </div>
   );

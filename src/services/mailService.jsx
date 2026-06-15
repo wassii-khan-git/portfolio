@@ -7,7 +7,7 @@ const apiKey = import.meta.env.VITE_EMAIL_API;
 // Send Mail Service
 export const SendMail = async (fullName, email, subject, message) => {
   try {
-    const response = emailjs.send(
+    const response = await emailjs.send(
       serviceId,
       templateId,
       {
@@ -18,10 +18,11 @@ export const SendMail = async (fullName, email, subject, message) => {
       },
       apiKey
     );
-    console.log("email response", response);
     return response;
   } catch (error) {
     console.error("Error sending email:", error);
-    throw new Error("Failed to send email. Please try again later.");
+    throw new Error("Failed to send email. Please try again later.", {
+      cause: error,
+    });
   }
 };

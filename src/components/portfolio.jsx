@@ -1,161 +1,85 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Modal from "./modal/modal";
-import { useDarkMode } from "../hook";
-import { containerVariants, imageVariants, itemVariants } from "./styles";
+import ProjectVisual from "./projectVisual";
+import { projects } from "../data/profile";
+import { containerVariants, itemVariants } from "./styles";
 
 const Portfolio = () => {
-  const { isDarkMode } = useDarkMode();
   const [selectedProject, setSelectedProject] = useState(null);
 
-  const projects = [
-    {
-      image:
-        "https://rainbowit.net/html/inbio/assets/images/portfolio/portfolio-01.jpg",
-      title: "E-Commerce Platform",
-      category: "Full Stack Development",
-      price: 600,
-      description: "A scalable e-commerce solution",
-      details:
-        "Developed a full-featured e-commerce platform with real-time inventory management, payment gateway integration, and admin dashboard.",
-      tech: ["React", "Node.js", "MongoDB", "Stripe API"],
-    },
-    {
-      image:
-        "https://rainbowit.net/html/inbio/assets/images/portfolio/portfolio-02.jpg",
-      title: "Mobile Fitness App",
-      category: "Cross-Platform Development",
-      price: 750,
-      description: "Health and fitness tracking application",
-      details:
-        "Created a cross-platform mobile app with workout tracking, nutrition planning, and social features using React Native.",
-      tech: ["React Native", "Firebase", "Redux", "Expo"],
-    },
-    {
-      image:
-        "https://rainbowit.net/html/inbio/assets/images/portfolio/portfolio-03.jpg",
-      title: "Dashboard Analytics",
-      category: "Data Visualization",
-      price: 508,
-      description: "Real-time business analytics dashboard",
-      details:
-        "Designed and implemented an interactive dashboard with real-time data visualization using D3.js and WebSocket integration.",
-      tech: ["React", "D3.js", "WebSocket", "Express"],
-    },
-  ];
-
-  const handleOpen = (project) => {
-    setSelectedProject(project);
-  };
-
   return (
-    <section className="w-full py-20 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+    <section className="w-full bg-[#f6f8fb] py-20 transition-colors duration-300 dark:bg-[#0b1120]">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.55 }}
+          className="mb-12 flex flex-col justify-between gap-5 lg:flex-row lg:items-end"
         >
-          <span className="inline-block text-redish dark:text-redish/80 text-sm font-semibold uppercase tracking-widest">
-            My Work
-          </span>
-          <h2 className="mt-3 text-4xl font-bold text-gray-900 dark:text-white font-poppins">
-            Recent Projects
-          </h2>
+          <div className="max-w-3xl">
+            <span className="text-sm font-semibold uppercase text-[#be123c] dark:text-[#fb7185]">
+              Selected Work
+            </span>
+            <h2 className="mt-3 text-3xl font-bold text-[#0f172a] dark:text-white">
+              Projects that show the roles I can win.
+            </h2>
+            <p className="mt-4 text-lg leading-8 text-[#475569] dark:text-[#cbd5e1]">
+              A focused set of healthcare, cloud, workflow, and product systems
+              based on work I have actually shipped or supported.
+            </p>
+          </div>
+          <div className="rounded-lg border border-[#d8dee9] bg-white px-4 py-3 text-sm font-semibold text-[#334155] dark:border-[#273449] dark:bg-[#111827] dark:text-[#cbd5e1]">
+            Case-study style summaries for recruiters and engineering teams
+          </div>
         </motion.div>
 
-        {/* Projects Grid */}
         <motion.div
-          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
+          {projects.map((project) => (
+            <motion.article
+              key={project.title}
               variants={itemVariants}
-              whileHover="hover"
-              whileTap="tap"
-              className={`group relative overflow-hidden rounded-2xl transition-all duration-300 
-                ${
-                  isDarkMode
-                    ? "bg-gray-800 hover:bg-gray-700"
-                    : "bg-white hover:bg-gray-50"
-                } shadow-lg hover:shadow-xl cursor-pointer`}
-              onClick={() => handleOpen(project)}
+              whileHover={{ y: -5 }}
+              className="group cursor-pointer overflow-hidden rounded-lg border border-[#d8dee9] bg-white shadow-sm transition dark:border-[#273449] dark:bg-[#111827]"
+              onClick={() => setSelectedProject(project)}
             >
-              {/* Image */}
-              <motion.div className="overflow-hidden" variants={imageVariants}>
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-
-              {/* Overlay Content */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="p-6"
-              >
-                <div className="flex justify-between items-center mb-3">
-                  <motion.span
-                    initial={{ x: -20 }}
-                    animate={{ x: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="text-redish text-sm font-medium uppercase"
-                  >
-                    {project.category}
-                  </motion.span>
-                  <motion.span
-                    initial={{ x: 20 }}
-                    animate={{ x: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className={`text-sm ${
-                      isDarkMode ? "text-gray-400" : "text-gray-600"
-                    }`}
-                  >
-                    ${project.price}
-                  </motion.span>
-                </div>
-                <motion.h3
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6 }}
-                  className={`text-xl font-semibold ${
-                    isDarkMode ? "text-white" : "text-gray-900"
-                  }`}
-                >
+              <ProjectVisual project={project} compact />
+              <div className="p-6">
+                <p className="text-sm font-semibold uppercase text-[#be123c] dark:text-[#fb7185]">
+                  {project.category}
+                </p>
+                <h3 className="mt-2 text-xl font-bold text-[#0f172a] dark:text-white">
                   {project.title}
-                </motion.h3>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 }}
-                  className={`mt-2 ${
-                    isDarkMode ? "text-gray-400" : "text-gray-600"
-                  }`}
-                >
+                </h3>
+                <p className="mt-3 leading-7 text-[#475569] dark:text-[#cbd5e1]">
                   {project.description}
-                </motion.p>
-              </motion.div>
-            </motion.div>
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {project.tech.slice(0, 4).map((tech) => (
+                    <span
+                      key={tech}
+                      className="rounded-md bg-[#f1f5f9] px-2 py-1 text-xs font-semibold text-[#334155] dark:bg-[#1f2937] dark:text-[#cbd5e1]"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.article>
           ))}
         </motion.div>
 
-        {/* Modal */}
         {selectedProject && (
           <Modal
             close={() => setSelectedProject(null)}
             data={selectedProject}
-            isDarkMode={isDarkMode}
           />
         )}
       </div>

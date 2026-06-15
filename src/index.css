@@ -1,33 +1,61 @@
 @import "tailwindcss";
 
-/* ---- Replaces tailwind.config.js ---- */
 @theme {
-  /* Box Shadows */
   --shadow-neuromorphic: 9px 9px 16px #cbced1, -9px -9px 16px #ffffff;
   --shadow-neuromorphic-inset:
     inset 9px 9px 16px #cbced1, inset -9px -9px 16px #ffffff;
 
-  /* Colors */
   --color-halfwhite: #ecf0f3;
-  --color-redish: #ff014f;
-  --color-black: #1e2125;
+  --color-redish: #be123c;
+  --color-black: #0f172a;
 
-  /* Font Families */
-  --font-heading: "Playfair Display", ui-serif, Georgia, serif;
+  --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-poppins: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-button: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-button: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-badge: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Dark mode */
 @variant dark (&:where(.dark, .dark *));
 
-.dark {
-  background-color: #1a202c;
-  color: #ffffff;
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  background: #f6f8fb;
+  color: #0f172a;
+  font-family: var(--font-body);
+}
+
+button,
+a,
+input,
+textarea {
+  font: inherit;
 }
 
 button {
   cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+::selection {
+  background: #fecdd3;
+  color: #881337;
+}
+
+.dark body {
+  background: #0b1120;
+  color: #ffffff;
 }

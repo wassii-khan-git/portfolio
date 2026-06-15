@@ -1,155 +1,80 @@
 import { motion } from "framer-motion";
-import { logo } from "./navbar";
-import { useDarkMode } from "../hook";
+import { GithubOutlined, LinkedinOutlined, MailOutlined } from "@ant-design/icons";
+import { profile } from "../data/profile";
 import { containerVariants, itemVariants } from "./styles";
-import {
-  GithubOutlined,
-  LinkedinOutlined,
-  MailOutlined,
-} from "@ant-design/icons";
 
 const Footer = () => {
-  const { isDarkMode } = useDarkMode();
-
   const socialLinks = [
     {
+      label: "GitHub",
       icon: GithubOutlined,
-      link: "https://github.com/wassii-khan-git",
+      link: profile.github,
     },
     {
+      label: "LinkedIn",
       icon: LinkedinOutlined,
-      link: "https://www.linkedin.com/in/waseem-khan-5a9393214/",
+      link: profile.linkedin,
     },
     {
+      label: "Email",
       icon: MailOutlined,
-      link: "https://mail.google.com/mail/u/0/#inbox?compose=new",
-    },
-  ];
-
-  const navItems = [
-    {
-      name: "Home",
-      link: "#home",
-    },
-    {
-      name: "Projects",
-      link: "#projects",
-    },
-    {
-      name: "Skills",
-      link: "#skills",
-    },
-    {
-      name: "Contact",
-      link: "#contact",
+      link: `mailto:${profile.email}`,
     },
   ];
 
   return (
-    <footer
-      className={`w-full py-12 mt-24 ${
-        isDarkMode ? "bg-gray-900" : "bg-halfwhite"
-      } transition-colors duration-300`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="w-full border-t border-[#d8dee9] bg-white py-10 transition-colors duration-300 dark:border-[#273449] dark:bg-[#0b1120]">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8"
+          className="flex flex-col justify-between gap-8 md:flex-row md:items-center"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {/* Branding */}
-          <motion.div
-            variants={itemVariants}
-            className="flex items-center gap-4"
-          >
-            <img src={logo} className="h-10 w-10" alt="Portfolio Logo" />
-            <span
-              className={`text-2xl font-bold ${
-                isDarkMode ? "text-white" : "text-gray-900"
-              }`}
-            >
-              Waseem<span className="text-redish">.</span>
-            </span>
+          <motion.div variants={itemVariants}>
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#0f172a] text-sm font-bold text-white dark:bg-white dark:text-[#0f172a]">
+                {profile.initials}
+              </span>
+              <div>
+                <p className="font-bold text-[#0f172a] dark:text-white">
+                  {profile.name}
+                </p>
+                <p className="text-sm text-[#64748b] dark:text-[#94a3b8]">
+                  {profile.headline}
+                </p>
+              </div>
+            </div>
           </motion.div>
 
-          {/* Navigation */}
-          <motion.ul
-            className="flex flex-wrap gap-6 md:gap-10"
-            variants={containerVariants}
-          >
-            {navItems.map((item, index = 1) => (
-              <motion.li key={index} variants={itemVariants}>
+          <motion.div variants={itemVariants} className="flex gap-3">
+            {socialLinks.map((item) => {
+              const Icon = item.icon;
+              return (
                 <a
-                  href={`${item.link}`}
-                  className={`text-lg font-medium hover:text-redish transition-colors ${
-                    isDarkMode ? "text-gray-400" : "text-gray-600"
-                  }`}
+                  key={item.label}
+                  href={item.link}
+                  target={item.link.startsWith("http") ? "_blank" : undefined}
+                  rel={
+                    item.link.startsWith("http")
+                      ? "noopener noreferrer"
+                      : undefined
+                  }
+                  aria-label={item.label}
+                  className="flex h-10 w-10 items-center justify-center rounded-md border border-[#cbd5e1] text-[#475569] transition hover:border-[#be123c] hover:text-[#be123c] dark:border-[#334155] dark:text-[#cbd5e1] dark:hover:text-[#fb7185]"
                 >
-                  {item.name}
+                  <Icon />
                 </a>
-              </motion.li>
-            ))}
-          </motion.ul>
-        </motion.div>
-
-        {/* Divider */}
-        <motion.hr
-          className={`my-12 ${
-            isDarkMode ? "border-gray-700" : "border-gray-200"
-          }`}
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        />
-
-        {/* Bottom Section */}
-        <motion.div
-          className="flex flex-col md:flex-row justify-between items-center gap-6 text-center"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          <motion.span
-            variants={itemVariants}
-            className={`text-sm ${
-              isDarkMode ? "text-gray-400" : "text-gray-600"
-            }`}
-          >
-            © {new Date().getFullYear()} All rights reserved.
-          </motion.span>
-
-          <motion.div variants={itemVariants} className="flex gap-6">
-            {socialLinks.map((item, index) => (
-              <motion.a
-                key={index}
-                href={`${item.link}`}
-                target={`${item.link}`}
-                rel="noopener noreferrer"
-                className={`p-2 rounded-lg transition-all ${
-                  isDarkMode
-                    ? "text-gray-400 hover:text-white hover:bg-gray-700"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                }`}
-                whileHover={{ y: -2 }}
-              >
-                <item.icon className="text-2xl" />
-              </motion.a>
-            ))}
+              );
+            })}
           </motion.div>
-
-          <motion.span
-            variants={itemVariants}
-            className={`text-sm ${
-              isDarkMode ? "text-gray-400" : "text-gray-600"
-            }`}
-          >
-            Made with <span className="text-redish">♥</span> By Wassii Khan
-          </motion.span>
         </motion.div>
+
+        <div className="mt-8 flex flex-col justify-between gap-3 border-t border-[#e2e8f0] pt-6 text-sm text-[#64748b] dark:border-[#273449] dark:text-[#94a3b8] md:flex-row">
+          <span>Copyright {new Date().getFullYear()} {profile.name}. All rights reserved.</span>
+          <span>Built with React, Vite, Tailwind CSS, and Framer Motion.</span>
+        </div>
       </div>
     </footer>
   );

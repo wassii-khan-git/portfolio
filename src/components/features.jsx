@@ -1,156 +1,104 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  MenuOutlined,
-  ArrowRightOutlined,
-  MailOutlined,
-  BookOutlined,
+  CloudServerOutlined,
+  MedicineBoxOutlined,
+  SafetyCertificateOutlined,
+  ShoppingCartOutlined,
+  TeamOutlined,
+  ThunderboltOutlined,
 } from "@ant-design/icons";
-import { useDarkMode } from "../hook";
+import { capabilities, timeline } from "../data/profile";
 import { containerVariants, itemVariants } from "./styles";
 
+const iconMap = {
+  CloudServerOutlined,
+  MedicineBoxOutlined,
+  SafetyCertificateOutlined,
+  ShoppingCartOutlined,
+  TeamOutlined,
+  ThunderboltOutlined,
+};
+
 const Features = () => {
-  const [hoveredIndex, setHoveredIndex] = useState(0);
-  const { isDarkMode } = useDarkMode();
-
-  const features = [
-    {
-      icon: <MenuOutlined />,
-      title: "Full Stack Development",
-      text: "End-to-end solutions from database design to frontend implementation.",
-    },
-    {
-      icon: <MailOutlined />,
-      title: "API Integration",
-      text: "Seamless third-party service integration and microservices architecture.",
-    },
-    {
-      icon: <BookOutlined />,
-      title: "Responsive Design",
-      text: "Mobile-first approach with cross-browser compatibility.",
-    },
-    {
-      icon: <MenuOutlined />,
-      title: "Cloud Solutions",
-      text: "AWS & Azure cloud deployment and serverless architecture.",
-    },
-    {
-      icon: <MailOutlined />,
-      title: "UI/UX Design",
-      text: "User-centered interfaces with modern design principles.",
-    },
-    {
-      icon: <BookOutlined />,
-      title: "DevOps & CI/CD",
-      text: "Automated pipelines and containerized deployments.",
-    },
-  ];
-
   return (
-    <section className="w-full py-20 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+    <section className="w-full bg-white py-20 transition-colors duration-300 dark:bg-[#0b1120]">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.55 }}
+          className="mb-12 max-w-3xl"
         >
-          <span className="inline-block text-redish dark:text-redish/80 text-sm font-semibold uppercase tracking-widest">
-            Expertise
+          <span className="text-sm font-semibold uppercase text-[#be123c] dark:text-[#fb7185]">
+            Experience
           </span>
-          <h2 className="mt-3 text-4xl font-bold text-gray-900 dark:text-white font-poppins">
-            Technical Capabilities
+          <h2 className="mt-3 text-3xl font-bold text-[#0f172a] dark:text-white">
+            Real systems, not template projects.
           </h2>
+          <p className="mt-4 text-lg leading-8 text-[#475569] dark:text-[#cbd5e1]">
+            My work sits where product UI, healthcare data, cloud deployment,
+            and operational workflows meet.
+          </p>
         </motion.div>
 
-        {/* Features Grid */}
         <motion.div
-          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {features.map((item, index) => (
-            <motion.div
-              key={index}
-              whileHover="hover"
-              whileTap="tap"
-              variants={itemVariants}
-              className={`group p-8 rounded-2xl transition-all duration-300 
-                ${
-                  isDarkMode
-                    ? "bg-gray-800 hover:bg-redish/20"
-                    : "bg-white hover:bg-redish/5"
-                }
-                shadow-lg hover:shadow-xl border ${
-                  isDarkMode
-                    ? "border-gray-700 hover:border-redish/30"
-                    : "border-gray-100 hover:border-redish/20"
-                }`}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              <motion.div className="space-y-6">
-                {/* Icon */}
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.4 }}
-                  className={`w-14 h-14 rounded-xl flex items-center justify-center text-2xl 
-                    ${
-                      isDarkMode
-                        ? "bg-gray-700 text-redish"
-                        : "bg-redish/10 text-redish"
-                    }
-                    transition-colors duration-300`}
-                >
-                  {item.icon}
-                </motion.div>
-
-                {/* Content */}
-                <div className="space-y-4">
-                  <motion.h3
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className={`text-xl font-semibold 
-                      ${isDarkMode ? "text-white" : "text-gray-900"}
-                      transition-colors duration-300`}
-                  >
-                    {item.title}
-                  </motion.h3>
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                    className={`text-base leading-relaxed 
-                      ${
-                        isDarkMode ? "text-gray-400" : "text-gray-600"
-                      } transition-colors duration-300`}
-                  >
-                    {item.text}
-                  </motion.p>
+          {capabilities.map((item) => {
+            const Icon = iconMap[item.icon];
+            return (
+              <motion.article
+                key={item.title}
+                variants={itemVariants}
+                whileHover={{ y: -4 }}
+                className="rounded-lg border border-[#d8dee9] bg-[#f8fafc] p-6 shadow-sm transition dark:border-[#273449] dark:bg-[#111827]"
+              >
+                <div className="mb-5 flex items-center justify-between gap-4">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-white text-xl text-[#be123c] shadow-sm dark:bg-[#0b1120] dark:text-[#fb7185]">
+                    <Icon />
+                  </div>
+                  <span className="rounded-md bg-[#eef2ff] px-2 py-1 text-xs font-bold text-[#3730a3] dark:bg-[#1e1b4b] dark:text-[#c4b5fd]">
+                    {item.signal}
+                  </span>
                 </div>
+                <h3 className="text-xl font-bold text-[#0f172a] dark:text-white">
+                  {item.title}
+                </h3>
+                <p className="mt-3 leading-7 text-[#475569] dark:text-[#cbd5e1]">
+                  {item.text}
+                </p>
+              </motion.article>
+            );
+          })}
+        </motion.div>
 
-                {/* Animated Arrow */}
-                <motion.div
-                  className="relative h-8"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: hoveredIndex === index ? 1 : 0 }}
-                >
-                  <ArrowRightOutlined
-                    className={`absolute text-xl transition-all duration-300 
-                      ${
-                        hoveredIndex === index
-                          ? "text-redish"
-                          : "text-transparent"
-                      }`}
-                  />
-                </motion.div>
-              </motion.div>
+        <motion.div
+          className="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-3"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          {timeline.map((item) => (
+            <motion.div
+              key={item.title}
+              variants={itemVariants}
+              className="rounded-lg border-l-4 border-[#be123c] bg-[#f8fafc] p-6 dark:bg-[#111827]"
+            >
+              <p className="text-sm font-semibold uppercase text-[#64748b] dark:text-[#94a3b8]">
+                {item.period}
+              </p>
+              <h3 className="mt-2 text-lg font-bold text-[#0f172a] dark:text-white">
+                {item.title}
+              </h3>
+              <p className="mt-3 leading-7 text-[#475569] dark:text-[#cbd5e1]">
+                {item.text}
+              </p>
             </motion.div>
           ))}
         </motion.div>

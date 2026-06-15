@@ -1,10 +1,13 @@
-// React
 import { useState } from "react";
-// Icons
-import { SunOutlined, MoonOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  MailOutlined,
+  MenuOutlined,
+  MoonOutlined,
+  SunOutlined,
+} from "@ant-design/icons";
 import { useDarkMode, useScroll } from "../hook";
-// Logo
-export const logo = "./cv.png";
+import { profile } from "../data/profile";
 
 const Navbar = () => {
   const { scrollToSection, ...refs } = useScroll();
@@ -12,9 +15,9 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { name: "Hero", ref: refs.heroRef },
-    { name: "Features", ref: refs.featuresRef },
-    { name: "Portfolio", ref: refs.portfolioRef },
+    { name: "Profile", ref: refs.heroRef },
+    { name: "Experience", ref: refs.featuresRef },
+    { name: "Projects", ref: refs.portfolioRef },
     { name: "Skills", ref: refs.skillsRef },
     { name: "Contact", ref: refs.contactRef },
   ];
@@ -24,133 +27,125 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <>
-      {/* Main content wrapper */}
-      <div
-        className={`fixed w-full top-0 z-40 ${
-          isOpen ? "opacity-30" : "opacity-100"
-        } md:opacity-100 transition-opacity duration-300`}
-      >
-        <nav className="dark:border-b dark:border-gray-600 shadow-md bg-white dark:bg-gray-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-7">
-            <div className="relative flex justify-between items-center h-16">
-              {/* Logo */}
-              <div className="flex items-center space-x-2">
-                <img src={logo} alt="logo" className="w-10 h-10" />
-                <span className="font-semibold text-lg dark:text-white">
-                  Portfolio
-                </span>
-              </div>
+      <header className="fixed left-0 top-0 z-40 w-full border-b border-[#d8dee9]/90 bg-white/95 shadow-sm backdrop-blur dark:border-[#273449] dark:bg-[#0b1120]/95">
+        <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <button
+            onClick={() => handleNavClick(refs.heroRef)}
+            className="flex items-center gap-3"
+            aria-label="Go to profile"
+          >
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#0f172a] text-sm font-bold text-white dark:bg-white dark:text-[#0f172a]">
+              {profile.initials}
+            </span>
+            <span className="hidden text-left sm:block">
+              <span className="block font-bold text-[#0f172a] dark:text-white">
+                {profile.name}
+              </span>
+              <span className="block text-xs font-semibold text-[#64748b] dark:text-[#94a3b8]">
+                Full-Stack Developer
+              </span>
+            </span>
+          </button>
 
-              {/* Mobile menu button */}
-              <button
-                onClick={toggleMenu}
-                className="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </button>
-
-              {/* Desktop navigation */}
-              <div className="hidden md:flex items-center space-x-8">
-                {navLinks?.length > 0 &&
-                  navLinks?.map((link) => (
-                    <button
-                      key={link.name}
-                      onClick={() => handleNavClick(link?.ref)}
-                      className="text-gray-700 dark:text-gray-300 hover:text-redish dark:hover:text-redish transition-colors duration-200"
-                    >
-                      {link.name}
-                    </button>
-                  ))}
-                <button
-                  onClick={toggleDarkMode}
-                  className="bg-halfwhite dark:bg-gray-800 ml-4 text-redish dark:text-redish px-4 py-3 rounded-lg text-sm font-medium uppercase outline-gray-400 transition-all ease-in-out duration-300 hover:bg-redish/10 dark:hover:bg-redish/20"
-                >
-                  {isDarkMode ? <SunOutlined /> : <MoonOutlined />}
-                </button>
-              </div>
-            </div>
-          </div>
-        </nav>
-      </div>
-
-      {/* Mobile navigation */}
-      <div
-        className={`fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-900 shadow-2xl transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out md:hidden z-50`}
-      >
-        <div className="h-full flex flex-col">
-          {/* Logo section in mobile menu */}
-          <div className="px-6 py-4 dark:border-b-gray-600 shadow-md bg-white dark:bg-gray-900  dark:border-b dark:border-gray-800">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <img src={logo} alt="logo" className="w-8 h-8" />
-                <span className="font-semibold text-lg dark:text-white">
-                  Portfolio
-                </span>
-              </div>
-              <button
-                onClick={toggleMenu}
-                className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-300"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          {/* Navigation links */}
-          <div className="flex-1 px-4 py-6 space-y-6 overflow-y-auto">
+          <div className="hidden items-center gap-1 md:flex">
             {navLinks.map((link) => (
               <button
                 key={link.name}
                 onClick={() => handleNavClick(link.ref)}
-                className="block w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-redish/10 dark:hover:bg-redish/20 hover:text-redish rounded-lg transition-all duration-200"
+                className="rounded-md px-3 py-2 text-sm font-semibold text-[#475569] transition hover:bg-[#f1f5f9] hover:text-[#be123c] dark:text-[#cbd5e1] dark:hover:bg-[#111827] dark:hover:text-[#fb7185]"
               >
                 {link.name}
               </button>
             ))}
+          </div>
+
+          <div className="hidden items-center gap-2 md:flex">
+            <a
+              href={`mailto:${profile.email}`}
+              className="inline-flex items-center gap-2 rounded-md bg-[#be123c] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#9f1239]"
+            >
+              <MailOutlined />
+              Email
+            </a>
             <button
               onClick={toggleDarkMode}
-              className="w-full flex items-center justify-center gap-2 mt-5 bg-redish px-5 py-2 rounded-lg text-white hover:translate-y-[-2px] transition-all ease-in-out duration-300"
+              aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+              className="flex h-10 w-10 items-center justify-center rounded-md border border-[#cbd5e1] text-[#475569] transition hover:border-[#be123c] hover:text-[#be123c] dark:border-[#334155] dark:text-[#cbd5e1] dark:hover:text-[#fb7185]"
             >
               {isDarkMode ? <SunOutlined /> : <MoonOutlined />}
-              <span>{isDarkMode ? "Light Mode" : "Dark Mode"}</span>
             </button>
           </div>
+
+          <div className="flex items-center gap-2 md:hidden">
+            <button
+              onClick={toggleDarkMode}
+              aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+              className="flex h-10 w-10 items-center justify-center rounded-md border border-[#cbd5e1] text-[#475569] dark:border-[#334155] dark:text-[#cbd5e1]"
+            >
+              {isDarkMode ? <SunOutlined /> : <MoonOutlined />}
+            </button>
+            <button
+              onClick={() => setIsOpen(true)}
+              aria-label="Open navigation"
+              className="flex h-10 w-10 items-center justify-center rounded-md bg-[#0f172a] text-white dark:bg-white dark:text-[#0f172a]"
+            >
+              <MenuOutlined />
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      <div
+        className={`fixed inset-0 z-50 bg-slate-950/60 transition md:hidden ${
+          isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        onClick={() => setIsOpen(false)}
+      />
+      <aside
+        className={`fixed inset-y-0 right-0 z-50 w-72 transform border-l border-[#d8dee9] bg-white p-5 shadow-2xl transition-transform duration-300 dark:border-[#273449] dark:bg-[#111827] md:hidden ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="font-bold text-[#0f172a] dark:text-white">
+              {profile.name}
+            </p>
+            <p className="text-sm text-[#64748b] dark:text-[#94a3b8]">
+              {profile.role}
+            </p>
+          </div>
+          <button
+            onClick={() => setIsOpen(false)}
+            aria-label="Close navigation"
+            className="flex h-10 w-10 items-center justify-center rounded-md border border-[#cbd5e1] text-[#475569] dark:border-[#334155] dark:text-[#cbd5e1]"
+          >
+            <CloseOutlined />
+          </button>
         </div>
-      </div>
+
+        <div className="mt-8 grid gap-2">
+          {navLinks.map((link) => (
+            <button
+              key={link.name}
+              onClick={() => handleNavClick(link.ref)}
+              className="rounded-md px-3 py-3 text-left font-semibold text-[#475569] transition hover:bg-[#f1f5f9] hover:text-[#be123c] dark:text-[#cbd5e1] dark:hover:bg-[#0b1120] dark:hover:text-[#fb7185]"
+            >
+              {link.name}
+            </button>
+          ))}
+        </div>
+
+        <a
+          href={`mailto:${profile.email}`}
+          className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#be123c] px-4 py-3 font-semibold text-white transition hover:bg-[#9f1239]"
+        >
+          <MailOutlined />
+          Email Me
+        </a>
+      </aside>
     </>
   );
 };
