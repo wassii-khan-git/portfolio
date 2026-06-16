@@ -1,10 +1,11 @@
+// Inside mailService.js
+
 import emailjs from "@emailjs/browser";
 
 const serviceId = import.meta.env.VITE_EMAIL_SERVICE_ID;
 const templateId = import.meta.env.VITE_TEMPLATE_ID;
 const apiKey = import.meta.env.VITE_EMAIL_API;
 
-// Send Mail Service
 export const SendMail = async (fullName, email, subject, message) => {
   try {
     const response = await emailjs.send(
@@ -16,7 +17,7 @@ export const SendMail = async (fullName, email, subject, message) => {
         subject,
         message,
       },
-      apiKey
+      apiKey,
     );
     return response;
   } catch (error) {
