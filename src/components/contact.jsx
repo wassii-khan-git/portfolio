@@ -89,8 +89,8 @@ const Contact = () => {
               {profile.headline}
             </p>
             <p className="mt-5 leading-8 text-[#475569] dark:text-[#cbd5e1]">
-              Send me a role description, project brief, or interview request.
-              I can discuss React/Next.js work, Azure deployment ownership,
+              Send me a role description, project brief, or interview request. I
+              can discuss React/Next.js work, Azure deployment ownership,
               healthcare integrations, and workflow automation.
             </p>
 
@@ -173,11 +173,11 @@ const Contact = () => {
                     values.fullName,
                     values.email,
                     values.subject,
-                    values.message
+                    values.message,
                   );
                   setMessage({
                     success: true,
-                    msg: "Message sent successfully.",
+                    msg: "Your message has been sent successfully.",
                   });
                   resetForm();
                 } catch (error) {
