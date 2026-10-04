@@ -1,61 +1,274 @@
 @import "tailwindcss";
 
-@theme {
-  --shadow-neuromorphic: 9px 9px 16px #cbced1, -9px -9px 16px #ffffff;
-  --shadow-neuromorphic-inset:
-    inset 9px 9px 16px #cbced1, inset -9px -9px 16px #ffffff;
-
-  --color-halfwhite: #ecf0f3;
-  --color-redish: #be123c;
-  --color-black: #0f172a;
-
-  --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-poppins: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-button: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-badge: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
-}
-
 @variant dark (&:where(.dark, .dark *));
 
-* {
-  box-sizing: border-box;
+/* ---------------------------------------------------------------------------
+   Design tokens. Dark is the default theme; .dark is on <html> from the start
+   and the toggle removes it to reveal the light theme.
+--------------------------------------------------------------------------- */
+:root {
+  --bg: #07080b;
+  --bg-elev: #0c0e13;
+  --surface: #101319;
+  --surface-2: #161a22;
+  --line: #1d212a;
+  --line-strong: #2a2f3a;
+  --text: #f4f5f7;
+  --text-muted: #9298a5;
+  --text-dim: #646a77;
+  --accent: #ff4d6d;
+  /* On a dark field the accent lifts on hover; on light it deepens. */
+  --accent-hover: #ff6a85;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(255, 77, 109, 0.12);
+  --accent-line: rgba(255, 77, 109, 0.35);
+  --glow: rgba(255, 77, 109, 0.18);
+  --shadow-lift: 0 24px 60px -24px rgba(0, 0, 0, 0.9);
 }
 
-html {
-  scroll-behavior: smooth;
+html:not(.dark) {
+  --bg: #fbfbfc;
+  --bg-elev: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f4f5f7;
+  --line: #e4e6eb;
+  --line-strong: #cfd3db;
+  --text: #0b0d12;
+  --text-muted: #5a6170;
+  --text-dim: #8a91a0;
+  --accent: #d11d45;
+  --accent-hover: #ad1739;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(209, 29, 69, 0.08);
+  --accent-line: rgba(209, 29, 69, 0.3);
+  --glow: rgba(209, 29, 69, 0.12);
+  --shadow-lift: 0 24px 60px -28px rgba(11, 13, 18, 0.25);
 }
 
-body {
-  margin: 0;
-  min-width: 320px;
-  overflow-x: hidden;
-  background: #f6f8fb;
-  color: #0f172a;
-  font-family: var(--font-body);
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--text);
+  --color-muted: var(--text-muted);
+  --color-dim: var(--text-dim);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-line: var(--accent-line);
+
+  --font-display: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
-button,
-a,
-input,
-textarea {
-  font: inherit;
-}
+/* --------------------------------------------------------------------------- */
 
-button {
-  cursor: pointer;
-}
+/* These element resets MUST stay inside @layer base. Unlayered rules beat
+   every layered rule in the cascade, so a bare `button { padding: 0 }` here
+   silently kills `px-*`, `bg-*`, `border-*` and `text-*` utilities on every
+   button in the app. */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
 
-button:disabled {
-  cursor: not-allowed;
+  html {
+    /* Lenis drives scrolling; native smooth behaviour would fight it. */
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    overflow-x: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition:
+      background-color 0.4s ease,
+      color 0.4s ease;
+  }
+
+  button,
+  a,
+  input,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+
+  button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
 }
 
 ::selection {
-  background: #fecdd3;
-  color: #881337;
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
-.dark body {
-  background: #0b1120;
-  color: #ffffff;
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Scrollbar ---------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 999px;
+  border: 3px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Lenis -------------------------------------------------------------------- */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Component classes live in @layer components so that utility classes,
+   which Tailwind puts in a later layer, can still override them. Left
+   unlayered, `.font-display` would beat every `tracking-*` utility. */
+@layer components {
+  /* Interaction -------------------------------------------------------------- */
+
+  /* The primary action. A real colour shift plus a press state, rather than the
+     flat opacity fade that gives cheap work away. */
+  .btn-accent {
+    background-color: var(--accent);
+    color: var(--accent-ink);
+    transition:
+      background-color 0.25s ease,
+      transform 0.12s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .btn-accent:hover {
+    background-color: var(--accent-hover);
+    box-shadow: 0 10px 30px -12px var(--glow);
+  }
+
+  .btn-accent:active {
+    transform: translateY(1px);
+    box-shadow: none;
+  }
+
+  .btn-accent:disabled {
+    background-color: var(--accent);
+    box-shadow: none;
+    transform: none;
+  }
+
+  /* Secondary action: the surface and the edge both respond. */
+  .btn-ghost {
+    border: 1px solid var(--line);
+    color: var(--text);
+    transition:
+      background-color 0.25s ease,
+      border-color 0.25s ease,
+      transform 0.12s ease;
+  }
+
+  .btn-ghost:hover {
+    background-color: var(--surface);
+    border-color: var(--line-strong);
+  }
+
+  .btn-ghost:active {
+    transform: translateY(1px);
+  }
+
+  /* Utilities ---------------------------------------------------------------- */
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  /* Fine grain over the whole page, so flat dark areas do not band. */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* The faint technical grid used behind the hero and the breakdown. */
+  .tech-grid {
+    background-image: linear-gradient(
+        to right,
+        var(--line) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+
+  .edge-fade {
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 100%);
+  }
+
+  /* 3D stage shared by the exploded architecture. */
+  .stage-3d {
+    perspective: 1600px;
+    perspective-origin: 50% 45%;
+  }
+
+  /* `will-change: opacity` would make the browser group this element, which
+     forces transform-style back to flat and collapses the exploded stack.
+     Only `transform` is safe to hint here. */
+  .layer-3d {
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
