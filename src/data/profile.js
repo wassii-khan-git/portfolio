@@ -1,218 +1,353 @@
-import realtimeAzureTranscription from "../assets/realtime-azure-transcription.png";
-import chatwootSanitized from "../assets/chatwoot-sanitized.png";
-import archiwizCompanySite from "../assets/archiwiz-company-site.png";
+import archiwizCompanySite from "../assets/archiwiz-company-site.webp";
 
 export const profile = {
   name: "Waseem Khan",
   initials: "WK",
-  role: "Full-Stack Developer",
-  headline: "Healthcare, cloud, and product systems developer",
-  location: "Pakistan, open to remote and international roles",
+  role: "Full Stack Engineer",
+  discipline: "Web · Mobile · Cloud",
+  location: "Peshawar, Pakistan — open to remote",
   email: "wassiikhan933@gmail.com",
   phone: "+92 336 3701019",
   github: "https://github.com/wassii-khan-git",
   linkedin: "https://www.linkedin.com/in/waseem-khan-5a9393214/",
+  availability: "Open to remote roles",
+
+  // Deliberately domain-neutral. The clinical work is evidence for the claim,
+  // not the category — naming one industry up here would narrow him for nothing.
+  headline: ["I build software", "that holds up in production."],
   intro:
-    "I build production React and Next.js applications with a strong track record in healthcare workflows, FHIR and DICOM integrations, Azure deployments, e-commerce, and automation systems.",
-  summary:
-    "3+ years of hands-on experience turning complex product requirements into reliable full-stack applications, with ownership across frontend architecture, API integration, cloud deployment, staging and production environments, and operational support.",
-  availability: "Open to remote and international teams",
-  heroTags: ["React", "Next.js", "TypeScript", "Azure", "FHIR", "DICOM"],
+    "Full Stack Engineer with 4 years shipping production web and mobile software across healthcare, e-commerce and business platforms. Project lead on a HIPAA-compliant clinical platform, and the developer behind several Next.js products.",
+  coreStack: ["React", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Azure"],
+
   stats: [
+    { value: "4", label: "Years shipping production software" },
+    { value: "Lead", label: "Project lead on a production healthcare platform" },
+    { value: "HIPAA", label: "Compliant systems running live" },
+    { value: "Azure", label: "App Service, WebJobs, GitLab CI/CD" },
+  ],
+};
+
+// ---------------------------------------------------------------------------
+// The scroll centrepiece. Deliberately generic: these are the layers of a
+// typical build that Waseem owns, not the architecture of any client or
+// employer system.
+// ---------------------------------------------------------------------------
+export const buildLayers = {
+  eyebrow: "How I build",
+  title: "The layers I own",
+  subtitle:
+    "From the first pixel to the production deploy. Scroll to take a typical build apart.",
+  layers: [
     {
-      value: "3+",
-      label: "Years delivering production software",
+      id: "interface",
+      index: "01",
+      label: "Interface",
+      tech: "React · Next.js · React Native · Electron",
+      title: "The part people actually touch",
+      text: "Responsive interfaces in React and Next.js, the same product on a phone through React Native, and on the desktop through Electron. Tailwind, shadcn/ui or Material UI depending on what the team already runs.",
+      metrics: ["Web, mobile, desktop", "Responsive UI"],
     },
     {
-      value: "10+",
-      label: "Projects across healthcare, commerce, and SaaS workflows",
+      id: "state",
+      index: "02",
+      label: "State & API",
+      tech: "TypeScript · Redux · Zustand · REST",
+      title: "Keeping the client honest",
+      text: "Typed contracts between frontend and backend, predictable state with Redux or Zustand, and REST integration that fails in ways the interface can actually handle.",
+      metrics: ["Typed contracts", "Predictable state"],
     },
     {
-      value: "Azure",
-      label: "App Service, VMs, containers, slots, SSL, and deployments",
+      id: "background",
+      index: "03",
+      label: "Jobs",
+      tech: "Node.js · Express · Job queues",
+      title: "Work that should never block a user",
+      text: "Anything slow goes to a queue and comes back when it is ready. Durable jobs, worker processes, and parallelism when one lane stops being enough.",
+      metrics: ["Queued jobs", "Parallel workers"],
+    },
+    {
+      id: "delivery",
+      index: "04",
+      label: "Delivery",
+      tech: "PostgreSQL · Azure · GitLab CI/CD",
+      title: "Where it lives and how it ships",
+      text: "PostgreSQL behind the API, hosted on Azure App Service, with separate staging and production environments deployed through GitLab CI/CD.",
+      metrics: ["Staging + prod", "CI/CD pipeline"],
     },
   ],
 };
 
-export const capabilities = [
+// ---------------------------------------------------------------------------
+// Engineering judgement, described as practice rather than as a blueprint of
+// any particular system.
+// ---------------------------------------------------------------------------
+export const decisions = [
   {
-    icon: "MedicineBoxOutlined",
-    title: "Healthcare Interoperability",
-    text: "Built Neuro ICU workflows connected with FHIR and DICOM data flows, including imaging-heavy clinical screens and a custom DICOM viewer.",
-    signal: "FHIR, DICOM, clinical workflows",
+    kicker: "Scaling",
+    problem:
+      "Background processing that handled one job at a time started falling behind once real users arrived.",
+    choice:
+      "Moved the queue from sequential to parallel workers, rather than letting people wait in line behind each other.",
+    result:
+      "Concurrent users served without the interface blocking on long-running work.",
   },
   {
-    icon: "SafetyCertificateOutlined",
-    title: "Privacy-Conscious Medical Automation",
-    text: "Worked on healthcare automation where patient PHI was not stored unnecessarily, with HIPAA-conscious decisions around data handling and workflow design.",
-    signal: "PHI-safe architecture",
+    kicker: "Compliance",
+    problem:
+      "Regulated software has to be built for its constraints from the start, not audited into shape afterwards.",
+    choice:
+      "Treated access control, encryption, audit logging and single sign-on as part of the initial architecture rather than a later pass.",
+    result: "Systems that met their compliance requirements without a retrofit.",
   },
   {
-    icon: "ThunderboltOutlined",
-    title: "Real-Time Azure Transcription",
-    text: "Developed real-time transcription workflows on Azure for medical automation use cases, focused on speed, reliability, and controlled data retention.",
-    signal: "Realtime systems",
-  },
-  {
-    icon: "CloudServerOutlined",
-    title: "Azure Production Delivery",
-    text: "Deployed and operated apps on Azure App Service, build services, container-based environments, staging and production slots, and VMs with SSL.",
-    signal: "Cloud and DevOps",
-  },
-  {
-    icon: "ShoppingCartOutlined",
-    title: "Commerce and Product Builds",
-    text: "Delivered e-commerce and business-facing platforms with modern React interfaces, backend integration, admin workflows, and responsive user journeys.",
-    signal: "Product engineering",
-  },
-  {
-    icon: "TeamOutlined",
-    title: "Workflow and Evaluation Systems",
-    text: "Built online teacher evaluation and automation systems that support structured data entry, review processes, reporting, and day-to-day operations.",
-    signal: "Internal tools",
+    kicker: "Delivery",
+    problem:
+      "Software that people depend on at work cannot be debugged in front of them.",
+    choice:
+      "Ran separate staging and production environments, with deployment through CI/CD.",
+    result: "Changes proven in staging before they reach anyone's working day.",
   },
 ];
 
+// ---------------------------------------------------------------------------
 export const projects = [
   {
-    title: "Neuro ICU Clinical Workflow System",
-    category: "Healthcare Interoperability",
-    description:
-      "Medical workflow platform for Neuro ICU teams with FHIR and DICOM integration.",
-    details:
-      "Worked on a healthcare system for Neuro ICU workflows, integrating medical data and imaging flows through FHIR and DICOM. The work included clinical screens, automation paths, and a custom DICOM viewer experience for reviewing imaging data inside the application.",
-    impact: [
-      "Integrated FHIR and DICOM workflows into a React application",
-      "Built custom imaging viewer behavior for DICOM-based review",
-      "Supported healthcare workflow automation with privacy-aware handling",
+    id: "clinical-docs",
+    title: "Clinical Documentation Platform",
+    role: "Project Lead",
+    year: "2026",
+    org: "Safe Solutions Consultant",
+    category: "Healthcare AI",
+    summary:
+      "An AI-assisted clinical documentation product for doctors, delivered on web and mobile and running in production under HIPAA. I led the project end to end.",
+    highlights: [
+      "Led delivery end to end, across the web platform and a React Native (Expo) mobile app",
+      "Built on React, Node.js, PostgreSQL and Azure, with LLM integration through Azure AI Foundry",
+      "Shipped under HIPAA requirements, on separate staging and production environments",
     ],
-    tech: ["React", "TypeScript", "FHIR", "DICOM", "Azure", "REST APIs"],
-    tone: "healthcare",
+    tech: [
+      "React",
+      "React Native",
+      "TypeScript",
+      "Node.js",
+      "PostgreSQL",
+      "Azure AI Foundry",
+      "GitLab CI/CD",
+    ],
+    confidential: true,
   },
   {
-    title: "Medical Automation and Azure Transcription",
-    category: "Healthcare Automation",
-    image: realtimeAzureTranscription,
-    imageAlt: "Realtime Azure transcription workspace for medical automation",
-    description:
-      "Real-time transcription and workflow automation designed to avoid persistent PHI storage.",
-    details:
-      "Developed Azure-powered transcription and automation workflows for medical use cases. The system was designed around controlled handling of patient information, with no unnecessary PHI persistence and HIPAA-conscious implementation choices.",
-    impact: [
-      "Built real-time transcription workflow behavior",
-      "Designed around minimal patient data retention",
-      "Connected Azure services with application-level automation",
+    id: "neuroicu",
+    title: "NeuroICU Patient Management System",
+    role: "Full Stack Developer",
+    year: "2024 — 2025",
+    org: "Safe Solutions Consultant",
+    category: "Clinical Records",
+    summary:
+      "A clinical records system for neuro-ICU teams covering patient demographics, labs, vitals, medications and CT/MRI imaging, with HL7 FHIR and DICOM integration for standardized data exchange.",
+    highlights: [
+      "Demographics, labs, vitals and medications in one clinical view",
+      "CT/MRI imaging handled through DICOM",
+      "HL7 FHIR integration for standardized exchange between systems",
     ],
-    tech: ["Azure", "React", "Node.js", "Realtime APIs", "App Service"],
-    tone: "azure",
+    tech: ["React", "Material UI", "Express.js", "PostgreSQL", "HL7 FHIR", "DICOM"],
+    confidential: true,
   },
   {
-    title: "E-Commerce Platform",
-    category: "Full-Stack Product",
-    description:
-      "Customer-facing commerce experience with admin workflows and scalable frontend architecture.",
-    details:
-      "Developed e-commerce experiences covering product browsing, customer flows, admin-facing management, and API-backed application logic. The focus was on reliable delivery, clean UI behavior, and maintainable React/Next.js implementation.",
-    impact: [
-      "Built responsive customer and admin-facing interfaces",
-      "Integrated backend APIs for product and order workflows",
-      "Improved product flow clarity across desktop and mobile",
-    ],
-    tech: ["React", "Next.js", "TypeScript", "Tailwind CSS", "APIs"],
-    tone: "commerce",
-  },
-  {
-    title: "Chatwoot on Azure VM",
-    category: "Open Source Operations",
-    image: chatwootSanitized,
-    imageAlt: "Sanitized Chatwoot support inbox hosted on Azure VM",
-    description:
-      "Self-hosted Chatwoot deployment on Azure VM with SSL and production usage.",
-    details:
-      "Cloned, configured, hosted, and supported an open-source Chatwoot system on an Azure VM. The work included server setup, SSL issuance, deployment configuration, and getting the system stable enough for active use.",
-    impact: [
-      "Set up production VM hosting for an open-source support tool",
-      "Issued and configured SSL for secure access",
-      "Handled operational setup beyond frontend code",
-    ],
-    tech: ["Azure VM", "Linux", "SSL", "Chatwoot", "Docker", "Nginx"],
-    tone: "ops",
-  },
-  {
-    title: "Online Teacher Evaluation System",
-    category: "Workflow System",
-    description:
-      "Structured evaluation platform for teachers, reviewers, and reporting workflows.",
-    details:
-      "Built an online teacher evaluation system for structured review workflows. The system supported form-driven data collection, evaluation flows, and organized reporting for education operations.",
-    impact: [
-      "Designed repeatable evaluation workflows",
-      "Built form-driven data collection and review screens",
-      "Improved operational visibility through structured records",
-    ],
-    tech: ["React", "Forms", "API Integration", "Dashboards", "Reporting"],
-    tone: "workflow",
-  },
-  {
-    title: "Archiwiz BIM and Visualization Website",
-    category: "Company Website",
+    id: "corporate",
+    title: "Corporate Web Platforms",
+    role: "Full Stack Developer",
+    year: "2024 — 2025",
+    org: "Safe Solutions Consultant",
+    category: "Next.js Platforms",
     image: archiwizCompanySite,
-    imageAlt: "Archiwiz company website hero page",
-    description:
-      "Company website for a BIM and architectural visualization studio with a polished service-led landing experience.",
-    details:
-      "Developed a professional company website experience for Archiwiz, focused on presenting BIM modeling, architectural visualization, and laser or drone scanning services with a strong visual first impression and clear navigation.",
-    impact: [
-      "Built a premium responsive landing experience for a real company",
-      "Presented services, project navigation, and quote entry points clearly",
-      "Handled visual polish, layout, and deployment-ready frontend delivery",
+    imageAlt: "Archiwiz BIM and architectural visualization website",
+    summary:
+      "Next.js platforms for the group's US and Pakistan-based businesses, with service catalogs, project showcases, and quote and lead-capture workflows.",
+    highlights: [
+      "archiwiz.com — BIM and architectural visualization",
+      "archiwizbuild.com — construction and remodeling",
+      "safesolutionsconsultants.com — group company site",
+      "Service catalogs, project showcases, quote and lead-capture flows",
     ],
-    tech: ["React", "Next.js", "Tailwind CSS", "Responsive UI", "Deployment"],
-    tone: "frontend",
+    tech: ["Next.js", "React", "Tailwind CSS", "Node.js"],
+    links: [
+      { label: "archiwiz.com", href: "https://archiwiz.com" },
+      { label: "archiwizbuild.com", href: "https://archiwizbuild.com" },
+      {
+        label: "safesolutionsconsultants.com",
+        href: "https://safesolutionsconsultants.com",
+      },
+    ],
+  },
+  {
+    id: "books-system",
+    title: "Bookstore Management System",
+    role: "Full Stack Developer",
+    year: "2026",
+    org: "Independent",
+    category: "Desktop App",
+    summary:
+      "A desktop application for running a bookstore: catalogue and inventory management, point of sale, and printable invoices. Built with Electron and React, backed by PostgreSQL through Prisma.",
+    highlights: [
+      "Electron desktop app built with electron-vite and packaged for Windows, macOS and Linux",
+      "Relational catalogue of categories, publishers and titles, managed through Prisma migrations on PostgreSQL",
+      "Admin dashboard with sorting, filtering and pagination across products, categories and companies",
+      "Point-of-sale flow with a cart and printable invoices",
+      "Authenticated sessions with hashed credentials, handled in the Electron main process over IPC",
+    ],
+    tech: [
+      "Electron",
+      "React",
+      "TypeScript",
+      "Prisma",
+      "PostgreSQL",
+      "TanStack Query",
+      "shadcn/ui",
+      "Tailwind CSS",
+    ],
+  },
+  {
+    id: "chatwoot",
+    title: "Self-Hosted Chatwoot on Azure",
+    role: "Full Stack Developer",
+    year: "Project",
+    org: "Independent",
+    category: "DevOps & Hosting",
+    summary:
+      "Took the open-source Chatwoot customer support platform, deployed it on an Azure virtual machine, secured it with SSL and prepared it for live use.",
+    highlights: [
+      "Provisioned and configured an Azure VM to run the platform",
+      "Issued and installed SSL certificates for secure access",
+      "Owned the deployment end to end and readied the instance for use",
+    ],
+    tech: ["Azure VM", "Linux", "Self-hosting", "SSL/TLS", "Chatwoot"],
+  },
+  {
+    id: "maktaba",
+    title: "Maktaba-e-Ilmiya",
+    role: "Full Stack Developer",
+    year: "Project",
+    org: "Independent",
+    category: "E-commerce",
+    summary:
+      "An online bookstore built with Next.js, covering a product catalog, shopping cart and customer accounts.",
+    highlights: [
+      "Product catalog with browsing and search",
+      "Shopping cart and checkout flow",
+      "Customer accounts and order history",
+    ],
+    tech: ["Next.js", "React", "Node.js"],
+    links: [{ label: "maktaba-e-ilmiya.com", href: "https://maktaba-e-ilmiya.com" }],
   },
 ];
 
-export const skillGroups = [
+// Kept to a single line rather than full cards: these predate the production
+// work above and should not compete with it for attention.
+export const earlierWork = {
+  label: "Earlier work",
+  items: [
+    "College management system",
+    "Restaurant reservation platform",
+    "Multi-role services directory",
+  ],
+  context: "Built in PHP around university, before the production work above.",
+};
+
+// ---------------------------------------------------------------------------
+export const stack = [
   {
-    title: "Frontend",
-    items: ["React", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "Responsive UI"],
+    title: "Programming",
+    items: ["JavaScript (ES6+)", "TypeScript", "SQL", "PHP", "Java"],
   },
   {
-    title: "Healthcare",
-    items: ["FHIR", "DICOM", "Custom DICOM viewer", "Medical automation", "PHI-aware workflows"],
+    title: "Frontend, Mobile & Desktop",
+    items: [
+      "React.js",
+      "Next.js",
+      "React Native (Expo)",
+      "Electron.js",
+      "Redux",
+      "Zustand",
+      "Tailwind CSS",
+      "shadcn/ui",
+      "Material UI",
+    ],
   },
   {
-    title: "Cloud and DevOps",
-    items: ["Azure App Service", "Azure VMs", "Container apps", "Staging and prod slots", "SSL setup"],
+    title: "Backend & Data",
+    items: [
+      "Node.js",
+      "Express.js",
+      "RESTful APIs",
+      "Background job queues",
+      "PostgreSQL",
+      "MySQL",
+      "MongoDB",
+      "Jest",
+    ],
   },
   {
-    title: "Backend and Integration",
-    items: ["REST APIs", "Node.js", "Express.js", "Realtime workflows", "Third-party services"],
+    title: "AI & Cloud",
+    items: [
+      "Azure AI Foundry (GPT)",
+      "LLM integration",
+      "Prompt engineering",
+      "Azure App Service",
+      "Azure WebJobs",
+      "GitLab CI/CD",
+      "Git",
+    ],
   },
   {
-    title: "Product Domains",
-    items: ["E-commerce", "Teacher evaluations", "Clinical workflows", "Support systems", "Portfolio sites"],
-  },
-  {
-    title: "Delivery Habits",
-    items: ["Production support", "Clear communication", "Deployment ownership", "Privacy judgment", "Fast iteration"],
+    title: "Healthcare & Security",
+    items: [
+      "HIPAA",
+      "HL7 FHIR",
+      "DICOM",
+      "RBAC",
+      "Audit logging",
+      "JWT",
+      "Microsoft SSO",
+      "Data encryption",
+    ],
   },
 ];
 
-export const timeline = [
+export const experience = [
   {
-    period: "Current focus",
-    title: "Healthcare and Azure product engineering",
-    text: "Building stronger specialization around clinical workflow systems, medical automation, FHIR/DICOM integrations, and Azure production delivery.",
+    company: "Safe Solutions Consultant",
+    title: "Full Stack Developer",
+    place: "Hayatabad, Peshawar",
+    period: "June 2024 — Present",
+    current: true,
+    points: [
+      "Project lead for a HIPAA-compliant clinical documentation platform across web and React Native mobile, running in production on Azure.",
+      "Built the NeuroICU patient management system with HL7 FHIR and DICOM integration.",
+      "Launched Next.js platforms for the group's US and Pakistan-based businesses.",
+    ],
   },
   {
-    period: "3+ years",
-    title: "Full-stack delivery across real projects",
-    text: "Worked across e-commerce, education, portfolio websites, open-source hosting, and internal workflow applications.",
+    company: "Freelance",
+    title: "Full Stack Developer",
+    place: "Remote",
+    period: "January 2023 — June 2024",
+    points: [
+      "Delivered end-to-end web applications for multiple clients, owning requirements, system architecture and deployment.",
+      "Worked on a React.js, Express.js and MongoDB stack.",
+    ],
   },
-  {
-    period: "Next role",
-    title: "International full-stack developer role",
-    text: "Looking for teams that need a practical developer who can own React/Next.js features, integrate APIs, and support cloud-hosted production systems.",
-  },
+];
+
+export const education = {
+  degree: "BSc Computer Science",
+  school: "Abdul Wali Khan University",
+  place: "Mardan, Pakistan",
+  period: "2019 — 2023",
+};
+
+export const languages = [
+  { name: "English", level: "Professional" },
+  { name: "Urdu", level: "Fluent" },
+  { name: "Pashto", level: "Native" },
 ];
