@@ -1,183 +1,197 @@
-import { motion } from "framer-motion";
-import {
-  ArrowRightOutlined,
-  CheckCircleOutlined,
-  CloudServerOutlined,
-  MedicineBoxOutlined,
-} from "@ant-design/icons";
-import { useScroll } from "../hook";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { profile } from "../data/profile";
-import { textVariants } from "./styles";
-import heroImage from "../assets/profile.png";
+import { Shell } from "./primitives";
+import { EASE } from "../lib/motion";
+
+const line = {
+  hidden: { y: "110%" },
+  visible: (i) => ({
+    y: "0%",
+    transition: { duration: 1.1, delay: 0.25 + i * 0.09, ease: EASE },
+  }),
+};
+
+/** Stack entries arrive one after another, after the headline has landed. */
+const railItem = {
+  hidden: { opacity: 0, x: 14 },
+  visible: (i) => ({
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.7, delay: 1.05 + i * 0.07, ease: EASE },
+  }),
+};
+
 
 const Hero = () => {
-  const { scrollToSection, contactRef, portfolioRef } = useScroll();
+  const ref = useRef(null);
+  const reduced = useReducedMotion();
+
+  // The hero recedes as the breakdown takes over, rather than simply
+  // scrolling away.
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
   return (
-    <section className="relative flex min-h-[calc(100vh-4rem)] items-center overflow-hidden bg-[#f6f8fb] dark:bg-[#0b1120]">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.08)_1px,transparent_1px)] bg-[size:44px_44px] opacity-40 dark:opacity-20" />
-      <div className="relative mx-auto grid w-full min-w-0 max-w-7xl grid-cols-1 items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
-        <motion.div
-          className="min-w-0 max-w-3xl"
-        >
-          <motion.div
-            variants={textVariants}
-            className="mb-6 flex max-w-full items-start gap-2 rounded-md border border-[#d8dee9] bg-white px-3 py-2 text-sm font-medium text-[#334155] shadow-sm dark:border-[#273449] dark:bg-[#111827] dark:text-[#cbd5e1] sm:inline-flex"
-          >
-            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#10b981]" />
-            <span className="min-w-0 flex-1 whitespace-normal">
-              {profile.availability}
-            </span>
-          </motion.div>
+    <section
+      id="hero"
+      ref={ref}
+      className="relative flex min-h-[100svh] items-center overflow-hidden pt-28"
+    >
+      {/* Backdrop: technical grid, faded at the edges, with a single warm bloom. */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="tech-grid edge-fade absolute inset-0 opacity-70" />
+        <div
+          className="absolute left-1/2 top-1/2 h-[46rem] w-[46rem] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px]"
+          style={{ background: "var(--glow)" }}
+        />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bg to-transparent" />
+      </div>
 
-          <motion.p
-            variants={textVariants}
-            className="mb-3 text-sm font-semibold uppercase text-[#be123c] dark:text-[#fb7185]"
-          >
-            {profile.role}
-          </motion.p>
-
-          <motion.h1
-            variants={textVariants}
-            className="max-w-3xl text-4xl font-bold leading-[1.08] text-[#0f172a] dark:text-white"
-          >
-            {profile.name} builds reliable healthcare, cloud, and product
-            systems.
-          </motion.h1>
-
-          <motion.p
-            variants={textVariants}
-            className="mt-6 max-w-2xl text-lg leading-8 text-[#475569] dark:text-[#cbd5e1]"
-          >
-            {profile.intro}
-          </motion.p>
-
-          <motion.div
-            variants={textVariants}
-            className="mt-7 flex flex-wrap gap-2"
-          >
-            {profile.heroTags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-md border border-[#d8dee9] bg-white px-3 py-2 text-sm font-semibold text-[#334155] dark:border-[#273449] dark:bg-[#111827] dark:text-[#dbeafe]"
-              >
-                {tag}
+      <motion.div
+        style={reduced ? undefined : { y, opacity, scale }}
+        className="relative w-full"
+      >
+        <Shell>
+          <div className="flex flex-col items-start">
+            {/* Availability, built from the site's own language: a squared
+                outline, a monospaced micro-caps label and a static accent
+                rule — not a pill with a pulsing dot. */}
+            <motion.div
+              initial={reduced ? false : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: EASE }}
+              className="mb-9 inline-flex items-center gap-2.5 rounded-[5px] border border-line bg-surface/50 py-1.5 pl-2.5 pr-4 backdrop-blur"
+            >
+              <span className="h-[11px] w-[2px] shrink-0 bg-accent" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
+                {profile.availability}
               </span>
-            ))}
-          </motion.div>
+            </motion.div>
 
-          <motion.div
-            variants={textVariants}
-            className="mt-9 flex flex-col gap-3 sm:flex-row"
-          >
-            <button
-              onClick={() => scrollToSection(contactRef)}
-              className="inline-flex items-center justify-center gap-2 rounded-md bg-[#be123c] px-5 py-3 font-semibold text-white shadow-lg shadow-rose-900/10 transition hover:bg-[#9f1239]"
-            >
-              Contact Me
-              <ArrowRightOutlined />
-            </button>
-            <button
-              onClick={() => scrollToSection(portfolioRef)}
-              className="inline-flex items-center justify-center gap-2 rounded-md border border-[#cbd5e1] bg-white px-5 py-3 font-semibold text-[#0f172a] transition hover:border-[#94a3b8] hover:bg-[#f8fafc] dark:border-[#334155] dark:bg-[#111827] dark:text-white dark:hover:bg-[#1f2937]"
-            >
-              View Projects
-            </button>
-          </motion.div>
+            <h1 className="font-display text-[clamp(2.6rem,8.2vw,6.2rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-ink">
+              {profile.headline.map((text, i) => (
+                <span key={text} className="block overflow-hidden pb-[0.08em]">
+                  <motion.span
+                    className="block"
+                    custom={i}
+                    variants={line}
+                    initial={reduced ? "visible" : "hidden"}
+                    animate="visible"
+                  >
+                    {i === 1 ? (
+                      <>
+                        that holds up{" "}
+                        <span className="relative whitespace-nowrap text-accent">
+                          in production
+                          <motion.span
+                            className="absolute -bottom-1 left-0 h-[2px] w-full origin-left bg-accent/40"
+                            initial={reduced ? false : { scaleX: 0 }}
+                            animate={{ scaleX: 1 }}
+                            transition={{ duration: 1, delay: 1.1, ease: EASE }}
+                          />
+                        </span>
+                        .
+                      </>
+                    ) : (
+                      text
+                    )}
+                  </motion.span>
+                </span>
+              ))}
+            </h1>
 
-          <motion.div
-            variants={textVariants}
-            className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3"
-          >
-            {profile.stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="rounded-lg border border-[#d8dee9] bg-white p-4 shadow-sm dark:border-[#273449] dark:bg-[#111827]"
+            {/* The stack moves out of the vertical flow and into a side rail
+                on wide screens, which is what keeps the hero inside a short
+                laptop viewport. */}
+            <div className="mt-8 grid w-full gap-10 lg:grid-cols-[minmax(0,40rem)_1fr] lg:items-start lg:gap-16">
+              <motion.p
+                initial={reduced ? false : { opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.7, ease: EASE }}
+                className="text-pretty text-lg leading-relaxed text-muted sm:text-xl"
               >
-                <div className="text-2xl font-bold text-[#0f172a] dark:text-white">
-                  {stat.value}
-                </div>
-                <div className="mt-1 text-sm leading-5 text-[#64748b] dark:text-[#94a3b8]">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        </motion.div>
+                {profile.intro}
+              </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
-          className="relative min-w-0"
-        >
-          <div className="overflow-hidden rounded-lg border border-[#d8dee9] bg-white shadow-2xl shadow-slate-900/10 dark:border-[#273449] dark:bg-[#111827]">
-            <div className="grid grid-cols-1 gap-0 sm:grid-cols-[0.88fr_1.12fr]">
-              <div className="relative min-h-[320px] overflow-hidden bg-[#e5e7eb] sm:min-h-[420px]">
-                <img
-                  src={heroImage}
-                  alt="Waseem Khan"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="flex flex-col justify-between p-5">
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-semibold text-[#64748b] dark:text-[#94a3b8]">
-                      Profile Snapshot
-                    </span>
-                    <span className="rounded-md bg-[#ecfdf5] px-2 py-1 text-xs font-bold text-[#047857] dark:bg-[#063a31] dark:text-[#6ee7b7]">
-                      Open
-                    </span>
-                  </div>
-                  <h2 className="mt-5 text-2xl font-bold text-[#0f172a] dark:text-white">
-                    {profile.headline}
-                  </h2>
-                  <p className="mt-3 text-sm leading-6 text-[#64748b] dark:text-[#94a3b8]">
-                    {profile.summary}
-                  </p>
-                </div>
+              <div className="hidden lg:flex lg:justify-end lg:pt-1.5">
+                <div className="flex items-stretch gap-5">
+                  <motion.span
+                    initial={reduced ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 0.95, ease: EASE }}
+                    className="font-mono text-[10px] uppercase tracking-[0.3em] text-dim [writing-mode:vertical-rl]"
+                  >
+                    Core stack
+                  </motion.span>
 
-                <div className="mt-6 space-y-3">
-                  <div className="flex items-start gap-3 rounded-lg border border-[#e2e8f0] p-3 dark:border-[#273449]">
-                    <MedicineBoxOutlined className="mt-1 text-lg text-[#be123c]" />
-                    <div>
-                      <p className="font-semibold text-[#0f172a] dark:text-white">
-                        Medical systems
-                      </p>
-                      <p className="text-sm text-[#64748b] dark:text-[#94a3b8]">
-                        Neuro ICU, FHIR, DICOM, custom viewer workflows
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3 rounded-lg border border-[#e2e8f0] p-3 dark:border-[#273449]">
-                    <CloudServerOutlined className="mt-1 text-lg text-[#2563eb]" />
-                    <div>
-                      <p className="font-semibold text-[#0f172a] dark:text-white">
-                        Cloud delivery
-                      </p>
-                      <p className="text-sm text-[#64748b] dark:text-[#94a3b8]">
-                        Azure App Service, VMs, containers, SSL, slots
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3 rounded-lg border border-[#e2e8f0] p-3 dark:border-[#273449]">
-                    <CheckCircleOutlined className="mt-1 text-lg text-[#0f766e]" />
-                    <div>
-                      <p className="font-semibold text-[#0f172a] dark:text-white">
-                        Production mindset
-                      </p>
-                      <p className="text-sm text-[#64748b] dark:text-[#94a3b8]">
-                        Practical, documented, and deployment-aware
-                      </p>
-                    </div>
-                  </div>
+                  <motion.span
+                    aria-hidden="true"
+                    initial={reduced ? false : { scaleY: 0 }}
+                    animate={{ scaleY: 1 }}
+                    transition={{ duration: 0.9, delay: 0.95, ease: EASE }}
+                    className="w-px origin-top bg-line"
+                  />
+
+                  <ul className="space-y-2.5">
+                    {profile.coreStack.map((item, i) => (
+                      <motion.li
+                        key={item}
+                        custom={i}
+                        variants={railItem}
+                        initial={reduced ? "visible" : "hidden"}
+                        animate="visible"
+                        className="font-mono text-xs leading-none text-muted"
+                      >
+                        {item}
+                      </motion.li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>
+
+            {/* Narrow screens keep it in the flow, where there is no side room. */}
+            <motion.div
+              initial={reduced ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.95 }}
+              className="mt-10 flex w-full max-w-3xl flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-line pt-6 lg:hidden"
+            >
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-dim">
+                Core stack
+              </span>
+              <span className="text-sm leading-relaxed text-muted">
+                {profile.coreStack.join("  ·  ")}
+              </span>
+            </motion.div>
           </div>
-        </motion.div>
-      </div>
+        </Shell>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4, duration: 1 }}
+        style={reduced ? undefined : { opacity }}
+        className="pointer-events-none absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 sm:flex"
+      >
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-dim">
+          Scroll
+        </span>
+        <span className="relative h-10 w-px overflow-hidden bg-line">
+          <motion.span
+            className="absolute inset-x-0 top-0 h-4 bg-accent"
+            animate={{ y: [-16, 40] }}
+            transition={{ duration: 1.9, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </span>
+      </motion.div>
     </section>
   );
 };
