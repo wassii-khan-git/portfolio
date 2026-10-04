@@ -1,172 +1,138 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import {
-  ArrowRightOutlined,
-  CloseCircleOutlined,
-  EnvironmentOutlined,
-  GithubOutlined,
-  LinkedinOutlined,
-  MailOutlined,
-  PhoneOutlined,
-} from "@ant-design/icons";
+import { AnimatePresence, motion } from "framer-motion";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import CustomField from "./fields";
 import { SendMail } from "../services/mailService";
 import { profile } from "../data/profile";
-import { contactContainerVariants, itemVariants } from "./styles";
+import { Eyebrow, Reveal, Shell } from "./primitives";
+import { EASE } from "../lib/motion";
 
-const contactLinks = [
-  {
-    label: "Email",
-    value: profile.email,
-    href: `mailto:${profile.email}`,
-    icon: MailOutlined,
-  },
+const schema = Yup.object({
+  fullName: Yup.string().trim().required("Your name, please"),
+  email: Yup.string().trim().email("That email does not look right").required("An email so I can reply"),
+  subject: Yup.string().trim().required("A subject line helps"),
+  message: Yup.string().trim().min(10, "A little more detail").required("Tell me what you need"),
+});
+
+const directLinks = [
+  { label: "Email", value: profile.email, href: `mailto:${profile.email}` },
   {
     label: "Phone",
     value: profile.phone,
     href: `tel:${profile.phone.replace(/\s/g, "")}`,
-    icon: PhoneOutlined,
   },
-  {
-    label: "LinkedIn",
-    value: "Waseem Khan",
-    href: profile.linkedin,
-    icon: LinkedinOutlined,
-  },
-  {
-    label: "GitHub",
-    value: "wassii-khan-git",
-    href: profile.github,
-    icon: GithubOutlined,
-  },
+  { label: "LinkedIn", value: "waseem-khan", href: profile.linkedin },
+  { label: "GitHub", value: "wassii-khan-git", href: profile.github },
 ];
 
 const Contact = () => {
-  const [message, setMessage] = useState({ success: false, msg: "" });
+  const [status, setStatus] = useState(null);
 
   return (
-    <section className="w-full bg-[#f6f8fb] py-20 transition-colors duration-300 dark:bg-[#0b1120]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.55 }}
-          className="mb-12 max-w-3xl"
-        >
-          <span className="text-sm font-semibold uppercase text-[#be123c] dark:text-[#fb7185]">
-            Contact
-          </span>
-          <h2 className="mt-3 text-3xl font-bold text-[#0f172a] dark:text-white">
-            Open to international full-stack opportunities.
-          </h2>
-          <p className="mt-4 text-lg leading-8 text-[#475569] dark:text-[#cbd5e1]">
-            I am looking for teams where healthcare, cloud deployment, product
-            ownership, and practical frontend engineering matter.
-          </p>
-        </motion.div>
+    <section id="contact" className="relative overflow-hidden border-t border-line py-16 sm:py-20">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="tech-grid edge-fade absolute inset-0 opacity-40" />
+        <div
+          className="absolute -bottom-40 left-1/2 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full blur-[130px]"
+          style={{ background: "var(--glow)" }}
+        />
+      </div>
 
-        <motion.div
-          className="grid grid-cols-1 gap-6 lg:grid-cols-[0.9fr_1.1fr]"
-          variants={contactContainerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <motion.aside
-            className="rounded-lg border border-[#d8dee9] bg-white p-6 shadow-sm dark:border-[#273449] dark:bg-[#111827]"
-            variants={itemVariants}
-          >
-            <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-[#fff1f2] text-2xl text-[#be123c] dark:bg-[#3f1220] dark:text-[#fb7185]">
-              <MailOutlined />
-            </div>
-            <h3 className="mt-6 text-2xl font-bold text-[#0f172a] dark:text-white">
-              {profile.name}
-            </h3>
-            <p className="mt-2 font-semibold text-[#475569] dark:text-[#cbd5e1]">
-              {profile.headline}
-            </p>
-            <p className="mt-5 leading-8 text-[#475569] dark:text-[#cbd5e1]">
-              Send me a role description, project brief, or interview request. I
-              can discuss React/Next.js work, Azure deployment ownership,
-              healthcare integrations, and workflow automation.
-            </p>
+      <Shell className="relative">
+        <div className="grid gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
+          {/* ------------------------------------------------------ pitch */}
+          <div>
+            <Reveal>
+              <Eyebrow>Contact</Eyebrow>
+            </Reveal>
 
-            <div className="mt-6 flex items-start gap-3 rounded-lg border border-[#e2e8f0] bg-[#f8fafc] p-4 dark:border-[#273449] dark:bg-[#0b1120]">
-              <EnvironmentOutlined className="mt-1 text-[#0f766e]" />
-              <span className="text-[#475569] dark:text-[#cbd5e1]">
-                {profile.location}
-              </span>
-            </div>
+            <Reveal delay={0.08}>
+              <h2 className="font-display mt-6 text-balance text-[clamp(2.1rem,5vw,3.6rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-ink">
+                Looking for a remote full-stack role.
+              </h2>
+            </Reveal>
 
-            <div className="mt-6 grid grid-cols-1 gap-3">
-              {contactLinks.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    target={item.href.startsWith("http") ? "_blank" : undefined}
-                    rel={
-                      item.href.startsWith("http")
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                    className="flex items-center gap-3 rounded-lg border border-[#e2e8f0] p-3 text-[#334155] transition hover:border-[#be123c] hover:text-[#be123c] dark:border-[#273449] dark:text-[#cbd5e1] dark:hover:text-[#fb7185]"
-                  >
-                    <Icon className="text-lg" />
-                    <div>
-                      <div className="text-xs font-bold uppercase text-[#64748b] dark:text-[#94a3b8]">
+            <Reveal delay={0.14}>
+              <p className="mt-6 max-w-lg text-pretty text-lg leading-relaxed text-muted">
+                Healthcare, AI product work, or anything where the system has to
+                stay up and stay compliant. Send a role description or a problem
+                you are stuck on — I reply to everything.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.2}>
+              <dl className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2">
+                {directLinks.map((item) => (
+                  <div key={item.label} className="bg-surface">
+                    <a
+                      href={item.href}
+                      target={item.href.startsWith("http") ? "_blank" : undefined}
+                      rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                      className="group block p-5 transition-colors hover:bg-surface-2"
+                    >
+                      <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-dim">
                         {item.label}
-                      </div>
-                      <div className="font-semibold">{item.value}</div>
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
-          </motion.aside>
+                      </dt>
+                      <dd className="mt-2 flex items-center gap-2 text-sm text-ink transition-colors group-hover:text-accent">
+                        <span className="truncate">{item.value}</span>
+                        <svg viewBox="0 0 24 24" className="h-3 w-3 shrink-0 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                      </dd>
+                    </a>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
 
-          <motion.div
-            className="rounded-lg border border-[#d8dee9] bg-white p-6 shadow-sm dark:border-[#273449] dark:bg-[#111827]"
-            variants={itemVariants}
-          >
-            {message.msg && (
-              <div
-                className={`mb-6 flex items-center justify-between gap-4 rounded-md px-4 py-3 font-semibold ${
-                  message.success
-                    ? "bg-[#ecfdf5] text-[#047857]"
-                    : "bg-[#fff1f2] text-[#be123c]"
-                }`}
-              >
-                <span>{message.msg}</span>
-                <button
-                  type="button"
-                  aria-label="Dismiss message"
-                  onClick={() => setMessage({ success: false, msg: "" })}
+            <Reveal delay={0.26}>
+              {/* Same static marker as the hero badge, not a pulsing dot. */}
+              <p className="mt-6 inline-flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-dim">
+                <span className="h-[11px] w-[2px] shrink-0 bg-accent" />
+                {profile.availability}
+              </p>
+            </Reveal>
+          </div>
+
+          {/* ------------------------------------------------------- form */}
+          <Reveal delay={0.12} className="rounded-2xl border border-line bg-surface p-6 sm:p-9">
+            <AnimatePresence>
+              {status && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, marginBottom: 0 }}
+                  animate={{ opacity: 1, height: "auto", marginBottom: 24 }}
+                  exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                  transition={{ duration: 0.4, ease: EASE }}
+                  className="overflow-hidden"
                 >
-                  <CloseCircleOutlined className="text-xl" />
-                </button>
-              </div>
-            )}
+                  <div
+                    role="status"
+                    className={`flex items-start justify-between gap-4 rounded-lg border p-4 text-sm ${
+                      status.success
+                        ? "border-line bg-bg text-ink"
+                        : "border-accent-line bg-accent-soft text-ink"
+                    }`}
+                  >
+                    <span className="leading-relaxed">{status.msg}</span>
+                    <button
+                      type="button"
+                      aria-label="Dismiss"
+                      onClick={() => setStatus(null)}
+                      className="shrink-0 text-dim transition-colors hover:text-ink"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" d="M6 6l12 12M18 6L6 18" />
+                      </svg>
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <Formik
-              initialValues={{
-                fullName: "",
-                email: "",
-                subject: "",
-                message: "",
-              }}
-              validationSchema={Yup.object({
-                fullName: Yup.string().required("Full name is required"),
-                email: Yup.string()
-                  .email("Invalid email format")
-                  .required("Email is required"),
-                subject: Yup.string().required("Subject is required"),
-                message: Yup.string().required("Message is required"),
-              })}
+              initialValues={{ fullName: "", email: "", subject: "", message: "" }}
+              validationSchema={schema}
               onSubmit={async (values, { resetForm, setSubmitting }) => {
                 try {
                   await SendMail(
@@ -175,17 +141,17 @@ const Contact = () => {
                     values.subject,
                     values.message,
                   );
-                  setMessage({
+                  setStatus({
                     success: true,
-                    msg: "Your message has been sent successfully.",
+                    msg: "Message sent. I will get back to you shortly.",
                   });
                   resetForm();
                 } catch (error) {
-                  setMessage({
+                  setStatus({
                     success: false,
                     msg:
                       error?.message ||
-                      "Message could not be sent. Please email me directly.",
+                      `Something went wrong sending that. Email me directly at ${profile.email}.`,
                   });
                 } finally {
                   setSubmitting(false);
@@ -193,48 +159,65 @@ const Contact = () => {
               }}
             >
               {({ errors, touched, handleSubmit, isSubmitting }) => (
-                <form className="space-y-5" onSubmit={handleSubmit}>
-                  <CustomField
-                    errors={errors.fullName}
-                    touched={touched.fullName}
-                    fieldKey="fullName"
-                    fieldName="Full Name"
-                  />
-                  <CustomField
-                    errors={errors.email}
-                    touched={touched.email}
-                    fieldKey="email"
-                    fieldName="Email"
-                  />
+                <form className="space-y-5" onSubmit={handleSubmit} noValidate>
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <CustomField
+                      errors={errors.fullName}
+                      touched={touched.fullName}
+                      fieldKey="fullName"
+                      fieldName="Name"
+                      placeholder="Jane Doe"
+                    />
+                    <CustomField
+                      errors={errors.email}
+                      touched={touched.email}
+                      fieldKey="email"
+                      fieldName="Email"
+                      placeholder="jane@company.com"
+                    />
+                  </div>
+
                   <CustomField
                     errors={errors.subject}
                     touched={touched.subject}
                     fieldKey="subject"
                     fieldName="Subject"
+                    placeholder="Full-stack role / project enquiry"
                   />
+
                   <CustomField
                     errors={errors.message}
                     touched={touched.message}
                     fieldKey="message"
                     fieldName="Message"
+                    placeholder="A few lines about the team and the work."
                   />
 
-                  <motion.button
+                  <button
                     type="submit"
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.99 }}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#be123c] px-5 py-3 font-semibold text-white transition hover:bg-[#9f1239] disabled:cursor-not-allowed disabled:opacity-70"
                     disabled={isSubmitting}
+                    className="btn-accent group inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg font-medium disabled:opacity-60"
                   >
-                    {isSubmitting ? "Sending..." : "Send Message"}
-                    <ArrowRightOutlined />
-                  </motion.button>
+                    {isSubmitting ? (
+                      <>
+                        <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                        Sending
+                      </>
+                    ) : (
+                      <>
+                        Send message
+                        <svg viewBox="0 0 24 24" className="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                      </>
+                    )}
+                  </button>
                 </form>
               )}
             </Formik>
-          </motion.div>
-        </motion.div>
-      </div>
+          </Reveal>
+        </div>
+      </Shell>
     </section>
   );
 };
