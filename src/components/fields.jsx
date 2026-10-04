@@ -1,13 +1,15 @@
 import { Field } from "formik";
 
-const CustomField = ({ errors, touched, fieldKey, fieldName }) => {
+const CustomField = ({ errors, touched, fieldKey, fieldName, placeholder }) => {
   const isMessage = fieldKey === "message";
+  const invalid = Boolean(errors && touched);
+  const errorId = `${fieldKey}-error`;
 
   return (
-    <div className="space-y-2">
+    <div>
       <label
         htmlFor={fieldKey}
-        className="block font-semibold text-[#334155] dark:text-[#cbd5e1]"
+        className="block font-mono text-[10px] uppercase tracking-[0.16em] text-dim"
       >
         {fieldName}
       </label>
@@ -16,16 +18,17 @@ const CustomField = ({ errors, touched, fieldKey, fieldName }) => {
         name={fieldKey}
         as={isMessage ? "textarea" : "input"}
         rows={isMessage ? 5 : undefined}
-        className={`w-full rounded-md border px-4 py-3 text-[#0f172a] outline-none transition focus:border-[#be123c] focus:ring-2 focus:ring-[#be123c]/20 dark:bg-[#0b1120] dark:text-white ${
+        placeholder={placeholder}
+        aria-invalid={invalid}
+        aria-describedby={invalid ? errorId : undefined}
+        className={`mt-2.5 w-full rounded-lg border bg-bg px-4 py-3 text-ink outline-none transition-colors placeholder:text-dim focus:border-accent ${
           isMessage ? "resize-none" : ""
-        } ${
-          errors && touched
-            ? "border-[#be123c]"
-            : "border-[#cbd5e1] dark:border-[#334155]"
-        }`}
+        } ${invalid ? "border-accent" : "border-line hover:border-line-strong"}`}
       />
-      {errors && touched && (
-        <p className="text-sm font-semibold text-[#be123c]">{errors}</p>
+      {invalid && (
+        <p id={errorId} className="mt-2 font-mono text-[11px] text-accent">
+          {errors}
+        </p>
       )}
     </div>
   );
